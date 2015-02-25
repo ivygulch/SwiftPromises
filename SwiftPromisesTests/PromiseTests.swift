@@ -167,7 +167,6 @@ class PromiseTests: XCTestCase {
         let promise1 = Promise()
         let timeout:NSTimeInterval = 5.0
         let expectation1 = expectationWithDescription("expectation1")
-        let expectation2 = expectationWithDescription("expectation2")
         let expectation3 = expectationWithDescription("expectation3")
         let promise3 = Promise()
         let promise2 = promise1.then(
