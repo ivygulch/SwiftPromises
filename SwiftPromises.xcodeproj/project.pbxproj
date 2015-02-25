@@ -12,7 +12,9 @@
 		F89674E41A9E58B700FA3AED /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F89674E21A9E58B700FA3AED /* Main.storyboard */; };
 		F89674E61A9E58B700FA3AED /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F89674E51A9E58B700FA3AED /* Images.xcassets */; };
 		F89674E91A9E58B700FA3AED /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F89674E71A9E58B700FA3AED /* LaunchScreen.xib */; };
-		F89674F51A9E58B700FA3AED /* SwiftPromisesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89674F41A9E58B700FA3AED /* SwiftPromisesTests.swift */; };
+		F89675001A9E590400FA3AED /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89674FF1A9E590400FA3AED /* Promise.swift */; };
+		F89675011A9E590400FA3AED /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89674FF1A9E590400FA3AED /* Promise.swift */; };
+		F89675031A9E593900FA3AED /* PromiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89675021A9E593900FA3AED /* PromiseTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,7 +37,8 @@
 		F89674E81A9E58B700FA3AED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		F89674EE1A9E58B700FA3AED /* SwiftPromisesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftPromisesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F89674F31A9E58B700FA3AED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F89674F41A9E58B700FA3AED /* SwiftPromisesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftPromisesTests.swift; sourceTree = "<group>"; };
+		F89674FF1A9E590400FA3AED /* Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
+		F89675021A9E593900FA3AED /* PromiseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromiseTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +80,7 @@
 		F89674DB1A9E58B700FA3AED /* SwiftPromises */ = {
 			isa = PBXGroup;
 			children = (
+				F89674FE1A9E590400FA3AED /* promises */,
 				F89674DE1A9E58B700FA3AED /* AppDelegate.swift */,
 				F89674E01A9E58B700FA3AED /* ViewController.swift */,
 				F89674E21A9E58B700FA3AED /* Main.storyboard */,
@@ -98,7 +102,7 @@
 		F89674F11A9E58B700FA3AED /* SwiftPromisesTests */ = {
 			isa = PBXGroup;
 			children = (
-				F89674F41A9E58B700FA3AED /* SwiftPromisesTests.swift */,
+				F89675021A9E593900FA3AED /* PromiseTests.swift */,
 				F89674F21A9E58B700FA3AED /* Supporting Files */,
 			);
 			path = SwiftPromisesTests;
@@ -110,6 +114,14 @@
 				F89674F31A9E58B700FA3AED /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F89674FE1A9E590400FA3AED /* promises */ = {
+			isa = PBXGroup;
+			children = (
+				F89674FF1A9E590400FA3AED /* Promise.swift */,
+			);
+			path = promises;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -214,6 +226,7 @@
 			files = (
 				F89674E11A9E58B700FA3AED /* ViewController.swift in Sources */,
 				F89674DF1A9E58B700FA3AED /* AppDelegate.swift in Sources */,
+				F89675001A9E590400FA3AED /* Promise.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -221,7 +234,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F89674F51A9E58B700FA3AED /* SwiftPromisesTests.swift in Sources */,
+				F89675011A9E590400FA3AED /* Promise.swift in Sources */,
+				F89675031A9E593900FA3AED /* PromiseTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
