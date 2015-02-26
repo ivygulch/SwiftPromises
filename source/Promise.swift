@@ -21,6 +21,14 @@ class Promise {
 
     // MARK: Interface
 
+    class func valueAsPromise(value: AnyObject?) -> Promise {
+        if let result = value as? Promise {
+            return result
+        } else {
+            return Promise(value)
+        }
+    }
+
     /**
     Initializes a new pending promise
 
@@ -31,27 +39,22 @@ class Promise {
     }
 
     /**
-    Initializes a new promise with a rejection error which also makes the promise state immutable.
+    Initializes a new promise with either an error or a value (which may be nil).
+
+    If the argument is an error, then the state is set to .Rejected otherwise it is set to .Fulfilled
+    In either case, the promise state (by definition) is then immutable.
 
     This can be useful when an async user code process needs to return a promise, but already
-    knows there is a problem (such as with a failed network request, database query, etc.)
+    has the result (such as with a completed network request, database query, etc.)
 
-    :returns: A rejected promise with no chained promises
-    */
-    init(_ error:NSError) {
-        state = .Rejected(error)
-    }
-
-    /**
-    Initializes a new promise with a fulfilled value which also makes the promise state immutable.
-
-    This can be useful when an async user code process needs to return a promise, but already
-    has the result (such as with a successful network request, database query, etc.)
-
-    :returns: A fulfilled promise with no chained promises
+    :returns: A rejected or fulfilled promise with no chained promises
     */
     init(_ value:AnyObject?) {
-        state = .Fulfilled(value)
+        if let error = value as? NSError {
+            state = .Rejected(error)
+        } else {
+            state = .Fulfilled(value)
+        }
     }
 
     /**
