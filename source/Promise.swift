@@ -32,7 +32,7 @@ class Promise {
 
     /**
     Initializes a new promise with a rejection error which also makes the promise state immutable.
-    
+
     This can be useful when an async user code process needs to return a promise, but already
     knows there is a problem (such as with a failed network request, database query, etc.)
 
@@ -55,87 +55,111 @@ class Promise {
     }
 
     /**
-     Read-only property that is true if the promise is still pending
+    Read-only property that is true if the promise is still pending
     */
     var isPending: Bool {
         get {
-            switch (state) {
-            case .Pending(let promiseActions):
-                return true
-            default:
-                return false
+            var result = false
+            stateSynchronizer.synchronize {
+                switch (self.state) {
+                case .Pending(let promiseActions):
+                    result = true
+                default:
+                    result = false
+                }
             }
+            return result
         }
     }
 
     /**
-     Read-only property that is true if the promise has been fulfilled
+    Read-only property that is true if the promise has been fulfilled
     */
     var isFulfilled: Bool {
         get {
-            switch (state) {
-            case .Fulfilled(let value):
-                return true
-            default:
-                return false
+            var result = false
+            stateSynchronizer.synchronize {
+                switch (self.state) {
+                case .Fulfilled(let value):
+                    result = true
+                default:
+                    result = false
+                }
             }
+            return result
         }
     }
 
     /**
-     Read-only property that is true if the promise has been rejected
+    Read-only property that is true if the promise has been rejected
     */
     var isRejected: Bool {
         get {
-            switch (state) {
-            case .Rejected(let error):
-                return true
-            default:
-                return false
+            var result = false
+            stateSynchronizer.synchronize {
+                switch (self.state) {
+                case .Rejected(let error):
+                    result = true
+                default:
+                    result = false
+                }
             }
+            return result
         }
     }
 
     /**
-     Read-only property that is the fulfilled value if the promise has been fulfilled, nil otherwise
+    Read-only property that is the fulfilled value if the promise has been fulfilled, nil otherwise
     */
     var value: AnyObject? {
-        switch (state) {
-        case .Fulfilled(let value):
-            return value
-        default:
-            return nil
+        var result:AnyObject? = nil
+        stateSynchronizer.synchronize {
+            switch (self.state) {
+            case .Fulfilled(let value):
+                result = value
+            default:
+                result = nil
+            }
         }
+        return result
     }
 
     /**
-     Read-only property that is the rejection error if the promise has been rejected, nil otherwise
+    Read-only property that is the rejection error if the promise has been rejected, nil otherwise
     */
     var error: NSError? {
-        switch (state) {
-        case .Rejected(let error):
-            return error
-        default:
-            return nil
+        var result:NSError? = nil
+        stateSynchronizer.synchronize {
+            switch (self.state) {
+            case .Rejected(let error):
+                result = error
+            default:
+                result = nil
+            }
         }
+        return result
     }
 
     /**
     If the promise is pending, then change its state to fulfilled using the supplied value
-    and notify any chained promises that it has been fulfilled.  If the promise is in any other 
+    and notify any chained promises that it has been fulfilled.  If the promise is in any other
     state, no changes are made and any chained promises are ignored.
 
     :param: the fulfilled value to use for the promise
     */
     func fulfill(value: AnyObject?) {
-        switch (state) {
-        case .Pending(let promiseActions):
-            state = .Fulfilled(value)
-            for promiseAction in promiseActions {
-                promiseAction.fulfill(value)
+        var promiseActionsToFulfill:[PromiseAction] = []
+        stateSynchronizer.synchronize {
+            switch (self.state) {
+            case .Pending(let promiseActions):
+                self.state = .Fulfilled(value)
+                promiseActionsToFulfill = promiseActions
+            default:
+                println("WARN: cannot fulfill promise, state already set to \(self.state)")
             }
-        default:
-            println("WARN: cannot fulfill promise, state already set to \(state)")
+        }
+        for promiseAction in promiseActionsToFulfill {
+            promiseAction.fulfill(value)
         }
     }
 
@@ -147,14 +171,18 @@ class Promise {
     :param: the rejection error to use for the promise
     */
     func reject(error: NSError) {
-        switch (state) {
-        case .Pending(let promiseActions):
-            state = .Rejected(error)
-            for promiseAction in promiseActions {
-                promiseAction.reject(error)
+        var promiseActionsToReject:[PromiseAction] = []
+        stateSynchronizer.synchronize {
+            switch (self.state) {
+            case .Pending(let promiseActions):
+                self.state = .Rejected(error)
+                promiseActionsToReject = promiseActions
+            default:
+                println("WARN: cannot reject promise, state already set to \(self.state)")
             }
-        default:
-            println("WARN: cannot reject promise, state already set to \(state)")
+        }
+        for promiseAction in promiseActionsToReject {
+            promiseAction.reject(error)
         }
     }
 
@@ -164,62 +192,49 @@ class Promise {
     will never be called. If the promise is eventually rejected, the reject closure will be
     called one time, and the fulfill closure will never be called.  If the promise remains in
     a pending state, neither closure will ever be called.
-    
+
     This method may be called as many times as needed, and the appropriate closures will be
     called in the order they were added via the then method.
-    
+
     If the promise is pending, then they will be added to the list of closures to be processed
-    once  the promise is fulfilled or rejected in the future. 
-    
+    once  the promise is fulfilled or rejected in the future.
+
     If the promise is already fulfilled, then the fulfill closure will be called immediately
-    
+
     If the promise is already rejected, then if the reject closure exists, it will be called immediately
 
     :param: fulfill closure to call when the promise is fulfilled
-            It can return:
-                an NSError: it will cause any dependent promises to be rejected with this error
-                a Promise: it will be chained to this instance
-                any other value including nil: it will cause any dependent promises to be fulfilled with this value
+    It can return:
+    an NSError: it will cause any dependent promises to be rejected with this error
+    a Promise: it will be chained to this instance
+    any other value including nil: it will cause any dependent promises to be fulfilled with this value
 
     :param: optional rejection closure to call when the promise is rejected
-    
+
     :returns: a new instance of a promise to which application code can add dependent promises (e.g. chaining)
     */
     func then(fulfill: kPromiseFulfillClosure, reject: kPromiseRejectClosure? = nil) -> Promise {
         let result = Promise()
         let promiseAction = PromiseAction(result, fulfill, reject)
-        switch (state) {
-        case .Pending(var promiseActions):
-            promiseActions.append(promiseAction)
-            state = .Pending(promiseActions)
-        case .Fulfilled(let value):
-            promiseAction.fulfill(value)
-        case .Rejected(let error):
-            promiseAction.reject(error)
+        stateSynchronizer.synchronize {
+            switch (self.state) {
+            case .Pending(var promiseActions):
+                promiseActions.append(promiseAction)
+                self.state = .Pending(promiseActions)
+            case .Fulfilled(let value):
+                promiseAction.fulfill(value)
+            case .Rejected(let error):
+                promiseAction.reject(error)
+            }
         }
         return result
     }
 
     // MARK: implementation
 
-    private var _state: PromiseState = .Pending([])
+    private var state: PromiseState = .Pending([])
     private let stateSynchronizer = Synchronizer()
 
-    private var state: PromiseState {
-        get {
-            var result: PromiseState!
-            stateSynchronizer.synchronize({
-                result = self._state
-            })
-            return result
-        }
-        set(newState) {
-            stateSynchronizer.synchronize({
-                self._state = newState
-            })
-        }
-    }
-    
 }
 
 private class PromiseAction {
@@ -256,5 +271,5 @@ private class PromiseAction {
         let rejectResult = (rejectClosure == nil) ? error : rejectClosure!(error)
         promise.reject(rejectResult)
     }
-
+    
 }
