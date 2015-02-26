@@ -36,30 +36,30 @@ class PromiseTests: XCTestCase {
 
     func testPendingPromise() {
         let promise = Promise()
-        XCTAssertTrue(promise.isPending())
-        XCTAssertFalse(promise.isFulfilled())
-        XCTAssertFalse(promise.isRejected())
-        XCTAssertNil(promise.value())
-        XCTAssertNil(promise.error())
+        XCTAssertTrue(promise.isPending)
+        XCTAssertFalse(promise.isFulfilled)
+        XCTAssertFalse(promise.isRejected)
+        XCTAssertNil(promise.value)
+        XCTAssertNil(promise.error)
     }
 
     func testImmediatelyFulfilledPromise() {
         let promise = Promise("test")
-        XCTAssertFalse(promise.isPending())
-        XCTAssertTrue(promise.isFulfilled())
-        XCTAssertFalse(promise.isRejected())
-        XCTAssertEqualOptional("test", promise.value() as? String)
-        XCTAssertNil(promise.error())
+        XCTAssertFalse(promise.isPending)
+        XCTAssertTrue(promise.isFulfilled)
+        XCTAssertFalse(promise.isRejected)
+        XCTAssertEqualOptional("test", promise.value as? String)
+        XCTAssertNil(promise.error)
     }
 
     func testImmediatelyRejectedPromise() {
         let error = NSError(domain: "test", code: -1, userInfo: nil)
         let promise = Promise(error)
-        XCTAssertFalse(promise.isPending())
-        XCTAssertFalse(promise.isFulfilled())
-        XCTAssertTrue(promise.isRejected())
-        XCTAssertEqualOptional(error, promise.error())
-        XCTAssertNil(promise.value())
+        XCTAssertFalse(promise.isPending)
+        XCTAssertFalse(promise.isFulfilled)
+        XCTAssertTrue(promise.isRejected)
+        XCTAssertEqualOptional(error, promise.error)
+        XCTAssertNil(promise.value)
     }
 
     func testSimpleThen() {
