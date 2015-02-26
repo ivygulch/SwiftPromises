@@ -9,20 +9,20 @@
 import Foundation
 import XCTest
 
-class PromiseTests: XCTestCase {
-
-    /// like XCTAssertEqual, but handles optional unwrapping
-    func XCTAssertEqualOptional<T:Equatable>(expression1: @autoclosure () -> T?, _ expression2: @autoclosure () -> T?, _ message: String? = nil, file: String = __FILE__, line: UInt = __LINE__) {
-        if let exp1 = expression1() {
-            if let exp2 = expression2() {
-                XCTAssertEqual(exp1, exp2, (message != nil) ? message! : "", file: file, line: line)
-            } else {
-                XCTFail((message != nil) ? message! : "exp1 != nil, exp2 == nil", file: file, line: line)
-            }
-        } else if let exp2 = expression2() {
-            XCTFail((message != nil) ? message! : "exp1 == nil, exp2 != nil", file: file, line: line)
+/// like XCTAssertEqual, but handles optional unwrapping
+func XCTAssertEqualOptional<T:Equatable>(expression1: @autoclosure () -> T?, expression2: @autoclosure () -> T?, _ message: String? = nil, file: String = __FILE__, line: UInt = __LINE__) {
+    if let exp1 = expression1() {
+        if let exp2 = expression2() {
+            XCTAssertEqual(exp1, exp2, (message != nil) ? message! : "", file: file, line: line)
+        } else {
+            XCTFail((message != nil) ? message! : "exp1 != nil, exp2 == nil", file: file, line: line)
         }
+    } else if let exp2 = expression2() {
+        XCTFail((message != nil) ? message! : "exp1 == nil, exp2 != nil", file: file, line: line)
     }
+}
+
+class PromiseTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
