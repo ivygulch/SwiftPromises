@@ -9,7 +9,7 @@
 import Foundation
 
 class Synchronizer {
-    private let queue:dispatch_queue_t!
+    private let queue:dispatch_queue_t
 
     init() {
         let uuid = NSUUID().UUIDString

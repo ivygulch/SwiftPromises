@@ -238,8 +238,8 @@ class Promise {
 }
 
 private class PromiseAction {
-    private let promise: Promise!
-    private let fulfillClosure: kPromiseFulfillClosure!
+    private let promise: Promise
+    private let fulfillClosure: kPromiseFulfillClosure
     private let rejectClosure: kPromiseRejectClosure?
 
     init(_ promise: Promise, _ fulfillClosure: kPromiseFulfillClosure, rejectClosure: kPromiseRejectClosure?) {
