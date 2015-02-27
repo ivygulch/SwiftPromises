@@ -19,7 +19,7 @@ private enum PromiseState {
 
 class Promise {
 
-    // MARK: Interface
+    // MARK: - Interface
 
     class func valueAsPromise(value: AnyObject?) -> Promise {
         if let result = value as? Promise {
@@ -233,7 +233,7 @@ class Promise {
         return result
     }
 
-    // MARK: implementation
+    // MARK: - implementation
 
     private var state: PromiseState = .Pending([])
     private let stateSynchronizer = Synchronizer()
