@@ -316,6 +316,8 @@ class PromiseTests: XCTestCase {
         waitForExpectationsWithTimeout(timeout, handler: nil)
     }
 
+    // MARK: - Promise.all tests
+
     func testAllFulfilledAfterCallToAll() {
         let timeout:NSTimeInterval = 5.0
         let expectation = expectationWithDescription("expectation")
@@ -442,6 +444,40 @@ class PromiseTests: XCTestCase {
                 expectation.fulfill()
                 return error
         })
+        
+        waitForExpectationsWithTimeout(timeout, handler: nil)
+    }
+    
+    // MARK: - Promise.any tests
+
+    func testAnyFulfilledAfterCallToAny() {
+        let timeout:NSTimeInterval = 5.0
+        let expectation = expectationWithDescription("expectation")
+
+        var expectedPromises:[Promise] = []
+        let indexToFufill = 1
+        for index in 0..<5 {
+            expectedPromises.append(Promise())
+        }
+        let promiseAll = Promise.any(expectedPromises)
+        promiseAll.then(
+            { (value) -> AnyObject? in
+                XCTAssertEqualOptional("test\(indexToFufill)", value as? String)
+                expectation.fulfill()
+                return value
+            }, reject: { (error) -> NSError in
+                XCTFail("should not fail")
+                expectation.fulfill()
+                return error
+        })
+
+        expectedPromises[indexToFufill].fulfill("test\(indexToFufill)")
+        for index in 0..<expectedPromises.count {
+            if (index != indexToFufill) {
+                let expectedPromise = expectedPromises[index]
+                expectedPromise.fulfill("test\(index)")
+            }
+        }
 
         waitForExpectationsWithTimeout(timeout, handler: nil)
     }

@@ -69,6 +69,24 @@ class Promise {
         return result
     }
 
+    class func any(promises:[Promise]) -> Promise {
+        let result = Promise()
+
+        for promise in promises {
+            promise.then(
+                { (value) -> AnyObject? in
+                    result.fulfill(value)
+                    return value
+                }, reject: { (error) -> NSError in
+                    result.reject(error)
+                    return error
+                }
+            )
+        }
+
+        return result
+    }
+    
     /**
     * Initializes a new pending promise
     *
