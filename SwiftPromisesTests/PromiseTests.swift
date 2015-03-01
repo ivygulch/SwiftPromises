@@ -316,7 +316,7 @@ class PromiseTests: XCTestCase {
         waitForExpectationsWithTimeout(timeout, handler: nil)
     }
 
-    func testAllWithDeferredFulfill() {
+    func testAllFulfilledAfterCallToAll() {
         let timeout:NSTimeInterval = 5.0
         let expectation = expectationWithDescription("expectation")
 
@@ -351,8 +351,8 @@ class PromiseTests: XCTestCase {
 
         waitForExpectationsWithTimeout(timeout, handler: nil)
     }
-    
-    func testAllWithAlreadyFulfilled() {
+
+    func testAllFulfilledBeforeCallToAll() {
         let timeout:NSTimeInterval = 5.0
         let expectation = expectationWithDescription("expectation")
 
@@ -382,5 +382,68 @@ class PromiseTests: XCTestCase {
 
         waitForExpectationsWithTimeout(timeout, handler: nil)
     }
-    
+
+    func testAllWithRejectionAfterCallToAll() {
+        let timeout:NSTimeInterval = 5.0
+        let expectation = expectationWithDescription("expectation")
+
+        var expectedPromises:[Promise] = []
+        let indexToReject=1
+        for index in 0..<5 {
+            expectedPromises.append(Promise())
+        }
+
+        let promiseAll = Promise.all(expectedPromises)
+        promiseAll.then(
+            { (value) -> AnyObject? in
+                XCTFail("should have failed")
+                expectation.fulfill()
+                return value
+            }, reject: { (error) -> NSError in
+                XCTAssertEqual("error\(indexToReject)", error.domain)
+                expectation.fulfill()
+                return error
+        })
+
+        for index in 0..<expectedPromises.count {
+            let expectedPromise = expectedPromises[index]
+            if (index == indexToReject) {
+                expectedPromise.reject(NSError(domain:"error\(index)", code:-1, userInfo:nil))
+            } else {
+                expectedPromise.fulfill("test\(index)")
+            }
+        }
+
+        waitForExpectationsWithTimeout(timeout, handler: nil)
+    }
+
+    func testAllWithRejectionBeforeCallToAll() {
+        let timeout:NSTimeInterval = 5.0
+        let expectation = expectationWithDescription("expectation")
+
+        var expectedPromises:[Promise] = []
+        let indexToReject=1
+        for index in 0..<5 {
+            if (index == indexToReject) {
+                expectedPromises.append(Promise(NSError(domain:"error\(index)", code:-1, userInfo:nil)))
+            } else {
+                expectedPromises.append(Promise("test\(index)"))
+            }
+        }
+
+        let promiseAll = Promise.all(expectedPromises)
+        promiseAll.then(
+            { (value) -> AnyObject? in
+                XCTFail("should have failed")
+                expectation.fulfill()
+                return value
+            }, reject: { (error) -> NSError in
+                XCTAssertEqual("error\(indexToReject)", error.domain)
+                expectation.fulfill()
+                return error
+        })
+
+        waitForExpectationsWithTimeout(timeout, handler: nil)
+    }
+
 }
