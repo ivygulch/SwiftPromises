@@ -70,7 +70,7 @@ class PromiseTests: XCTestCase {
             { (value) -> AnyObject? in
                 expectation.fulfill()
                 return nil
-            }, reject: { (error) -> NSError in
+            }, reject: { (error) -> AnyObject? in
                 expectation.fulfill()
                 XCTFail("Should not call reject: \(error)")
                 return error
@@ -102,7 +102,7 @@ class PromiseTests: XCTestCase {
                 expectation.fulfill()
                 XCTFail("Should not call then: \(value)")
                 return nil
-            }, reject: { (error) -> NSError in
+            }, reject: { (error) -> AnyObject? in
                 expectation.fulfill()
                 return error
         })
@@ -126,7 +126,7 @@ class PromiseTests: XCTestCase {
                     XCTFail("Expected a String? for the value")
                 }
                 return value
-            }, reject: { (error) -> NSError in
+            }, reject: { (error) -> AnyObject? in
                 expectation1.fulfill()
                 XCTFail("Should not call reject promise1: \(error)")
                 return error
@@ -140,7 +140,7 @@ class PromiseTests: XCTestCase {
                     XCTFail("Expected a String? for the value")
                 }
                 return value
-            }, reject: { (error) -> NSError in
+            }, reject: { (error) -> AnyObject? in
                 expectation2.fulfill()
                 XCTFail("Should not call reject promise2: \(error)")
                 return error
@@ -154,7 +154,7 @@ class PromiseTests: XCTestCase {
                     XCTFail("Expected a String? for the value")
                 }
                 return value
-            }, reject: { (error) -> NSError in
+            }, reject: { (error) -> AnyObject? in
                 expectation3.fulfill()
                 XCTFail("Should not call reject promise3: \(error)")
                 return error
@@ -209,7 +209,7 @@ class PromiseTests: XCTestCase {
                 expectation1.fulfill()
                 XCTFail("Should not call then promise1: \(value)")
                 return value
-            }, reject: { (error) -> NSError in
+            }, reject: { (error) -> AnyObject? in
                 XCTAssertEqual(expectedError, error)
                 expectation1.fulfill()
                 return error
@@ -219,7 +219,7 @@ class PromiseTests: XCTestCase {
                 expectation2.fulfill()
                 XCTFail("Should not call then promise2: \(value)")
                 return value
-            }, reject: { (error) -> NSError in
+            }, reject: { (error) -> AnyObject? in
                 XCTAssertEqual(expectedError, error)
                 expectation2.fulfill()
                 return error
@@ -229,7 +229,7 @@ class PromiseTests: XCTestCase {
                 expectation3.fulfill()
                 XCTFail("Should not call then promise3: \(value)")
                 return value
-            }, reject: { (error) -> NSError in
+            }, reject: { (error) -> AnyObject? in
                 XCTAssertEqual(expectedError, error)
                 expectation3.fulfill()
                 return error
@@ -316,6 +316,56 @@ class PromiseTests: XCTestCase {
         waitForExpectationsWithTimeout(timeout, handler: nil)
     }
 
+    func testMixedResults() {
+        // return error from promise1.fulfill, then subsequently a valid value from promise2.reject
+        let promise1 = Promise()
+        let timeout:NSTimeInterval = 5.0
+        let expectation1 = expectationWithDescription("expectation1")
+        let expectation2 = expectationWithDescription("expectation2")
+        let expectation3 = expectationWithDescription("expectation3")
+        let expectedValue = "test"
+        let promise2 = promise1.then(
+            { (value) -> AnyObject? in
+                expectation1.fulfill()
+                if let actualValue = value as? String {
+                    XCTAssertEqual(expectedValue, actualValue)
+                } else {
+                    XCTFail("Expected a String? for the value")
+                }
+                return NSError(domain:"promise1error", code:-1, userInfo:nil)
+            }, reject: { (error) -> AnyObject? in
+                expectation1.fulfill()
+                XCTFail("Should not call reject promise1: \(error)")
+                return error
+        })
+        let promise3 = promise2.then(
+            { (value) -> AnyObject? in
+                expectation2.fulfill()
+                XCTFail("Should have called reject promise2")
+                return value
+            }, reject: { (error) -> AnyObject? in
+                expectation2.fulfill()
+                XCTAssertEqual("promise1error", error.domain)
+                return "validResultFromPromise2"
+        })
+        promise3.then(
+            { (value) -> AnyObject? in
+                expectation3.fulfill()
+                if let actualValue = value as? String {
+                    XCTAssertEqual("validResultFromPromise2", actualValue)
+                } else {
+                    XCTFail("Expected a String? for the value")
+                }
+                return value
+            }, reject: { (error) -> AnyObject? in
+                expectation3.fulfill()
+                XCTFail("Should not call reject promise3: \(error)")
+                return error
+        })
+        promise1.fulfill(expectedValue)
+        waitForExpectationsWithTimeout(timeout, handler: nil)
+    }
+
     // MARK: - Promise.all tests
 
     func testAllFulfilledAfterCallToAll() {
@@ -340,7 +390,7 @@ class PromiseTests: XCTestCase {
                 }
                 expectation.fulfill()
                 return value
-            }, reject: { (error) -> NSError in
+            }, reject: { (error) -> AnyObject? in
                 XCTFail("should not fail")
                 expectation.fulfill()
                 return error
@@ -376,7 +426,7 @@ class PromiseTests: XCTestCase {
                 }
                 expectation.fulfill()
                 return value
-            }, reject: { (error) -> NSError in
+            }, reject: { (error) -> AnyObject? in
                 XCTFail("should not fail")
                 expectation.fulfill()
                 return error
@@ -401,7 +451,7 @@ class PromiseTests: XCTestCase {
                 XCTFail("should have failed")
                 expectation.fulfill()
                 return value
-            }, reject: { (error) -> NSError in
+            }, reject: { (error) -> AnyObject? in
                 XCTAssertEqual("error\(indexToReject)", error.domain)
                 expectation.fulfill()
                 return error
@@ -439,7 +489,7 @@ class PromiseTests: XCTestCase {
                 XCTFail("should have failed")
                 expectation.fulfill()
                 return value
-            }, reject: { (error) -> NSError in
+            }, reject: { (error) -> AnyObject? in
                 XCTAssertEqual("error\(indexToReject)", error.domain)
                 expectation.fulfill()
                 return error

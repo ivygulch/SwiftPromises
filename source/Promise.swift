@@ -9,7 +9,7 @@
 import Foundation
 
 typealias kPromiseFulfillClosure = (AnyObject?) -> AnyObject?
-typealias kPromiseRejectClosure = (NSError) -> NSError
+typealias kPromiseRejectClosure = (NSError) -> AnyObject?
 
 private enum PromiseState {
     case Pending([PromiseAction])
@@ -292,8 +292,17 @@ private class PromiseAction {
     }
 
     func fulfill(value: AnyObject?) {
-        let fulfillResult: (AnyObject?) = fulfillClosure(value)
-        if let promiseResult = fulfillResult as? Promise {
+        let result: (AnyObject?) = fulfillClosure(value)
+        processValue(result)
+    }
+
+    func reject(error: NSError) {
+        let result: (AnyObject?) = (rejectClosure == nil) ? error : rejectClosure!(error)
+        processValue(result)
+    }
+
+    func processValue(value: AnyObject?) {
+        if let promiseResult = value as? Promise {
             promiseResult.then(
                 { (value) -> AnyObject? in
                     self.promise.fulfill(value)
@@ -303,16 +312,12 @@ private class PromiseAction {
                     return error
                 }
             )
-        } else if let errorResult = fulfillResult as? NSError {
+        } else if let errorResult = value as? NSError {
             promise.reject(errorResult)
         } else {
-            promise.fulfill(fulfillResult)
+            promise.fulfill(value)
         }
     }
 
-    func reject(error: NSError) {
-        let rejectResult = (rejectClosure == nil) ? error : rejectClosure!(error)
-        promise.reject(rejectResult)
-    }
-    
+
 }
