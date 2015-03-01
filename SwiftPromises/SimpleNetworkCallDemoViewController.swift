@@ -14,6 +14,7 @@ class SimpleNetworkCallDemoViewController: BaseDemoViewController {
     @IBOutlet var countTextField:UITextField?
     @IBOutlet var urlStatusImageView:UIImageView?
     @IBOutlet var countStatusImageView:UIImageView?
+    @IBOutlet var finalStatusImageView:UIImageView?
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -23,6 +24,7 @@ class SimpleNetworkCallDemoViewController: BaseDemoViewController {
     func clearStatus() {
         urlStatusImageView!.setStatus(nil)
         countStatusImageView!.setStatus(nil)
+        finalStatusImageView!.setStatus(nil)
     }
 
     override func readyToStart() -> Bool {
@@ -40,10 +42,12 @@ class SimpleNetworkCallDemoViewController: BaseDemoViewController {
         }).then(
             { [weak self] (value) -> AnyObject? in
                 self?.log("final success: \(value)")
+                self?.finalStatusImageView!.setStatus(true)
                 self?.stopActivityIndicator()
                 return value
             }, reject: { [weak self] (error) -> AnyObject? in
                 self?.log("final error: \(error.localizedDescription)")
+                self?.finalStatusImageView!.setStatus(false)
                 self?.stopActivityIndicator()
                 return error
             }

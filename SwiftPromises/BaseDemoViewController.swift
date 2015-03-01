@@ -43,7 +43,7 @@ extension UIImageView {
             if let success = success {
                 self?.image = UIImage(named:success ? "Knob Valid Green" : "Knob Cancel")
             } else {
-                self?.image = nil
+                self?.image = UIImage(named:"Knob Grey")
             }
         })
     }
