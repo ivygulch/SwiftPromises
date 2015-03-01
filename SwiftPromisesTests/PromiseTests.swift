@@ -315,5 +315,72 @@ class PromiseTests: XCTestCase {
         promise1.fulfill("test1")
         waitForExpectationsWithTimeout(timeout, handler: nil)
     }
+
+    func testAllWithDeferredFulfill() {
+        let timeout:NSTimeInterval = 5.0
+        let expectation = expectationWithDescription("expectation")
+
+        var expectedPromises:[Promise] = []
+        for index in 0..<5 {
+            expectedPromises.append(Promise())
+        }
+        let promiseAll = Promise.all(expectedPromises)
+        promiseAll.then(
+            { (value) -> AnyObject? in
+                if let actualPromises = value as? [Promise] {
+                    XCTAssertEqual(expectedPromises.count, actualPromises.count)
+                    for index in 0..<actualPromises.count {
+                        let actualPromise = actualPromises[index]
+                        XCTAssertEqualOptional("test\(index)", actualPromise.value as? String)
+                    }
+                } else {
+                    XCTFail("should return list of fulfilled promises")
+                }
+                expectation.fulfill()
+                return value
+            }, reject: { (error) -> NSError in
+                XCTFail("should not fail")
+                expectation.fulfill()
+                return error
+        })
+
+        for index in 0..<expectedPromises.count {
+            let expectedPromise = expectedPromises[index]
+            expectedPromise.fulfill("test\(index)")
+        }
+
+        waitForExpectationsWithTimeout(timeout, handler: nil)
+    }
+    
+    func testAllWithAlreadyFulfilled() {
+        let timeout:NSTimeInterval = 5.0
+        let expectation = expectationWithDescription("expectation")
+
+        var expectedPromises:[Promise] = []
+        for index in 0..<5 {
+            expectedPromises.append(Promise("test\(index)"))
+        }
+        let promiseAll = Promise.all(expectedPromises)
+        promiseAll.then(
+            { (value) -> AnyObject? in
+                if let actualPromises = value as? [Promise] {
+                    XCTAssertEqual(expectedPromises.count, actualPromises.count)
+                    for index in 0..<actualPromises.count {
+                        let actualPromise = actualPromises[index]
+                        XCTAssertEqualOptional("test\(index)", actualPromise.value as? String)
+                    }
+                } else {
+                    XCTFail("should return list of fulfilled promises")
+                }
+                expectation.fulfill()
+                return value
+            }, reject: { (error) -> NSError in
+                XCTFail("should not fail")
+                expectation.fulfill()
+                return error
+        })
+
+        waitForExpectationsWithTimeout(timeout, handler: nil)
+    }
     
 }

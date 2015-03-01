@@ -17,6 +17,21 @@ private enum PromiseState {
     case Rejected(NSError)
 }
 
+/**
+* A Swift version of the Promise pattern popular in the javascript world
+*
+* "A promise represents the eventual result of an asynchronous operation.
+* The primary way of interacting with a promise is through its then method, 
+* which registers callbacks to receive either a promise’s eventual value or 
+* the reason why the promise cannot be fulfilled."  (https://promisesaplus.com) 
+*
+* "The point of promises is to give us back functional composition and error
+* bubbling in the async world. They do this by saying that your functions 
+* should return a promise, which can do one of two things:
+*  - Become fulfilled by a value
+*  - Become rejected with an error" (https://gist.github.com/domenic/3889970)
+*
+*/
 class Promise {
 
     // MARK: - Interface
@@ -27,6 +42,31 @@ class Promise {
         } else {
             return Promise(value)
         }
+    }
+
+    class func all(promises:[Promise]) -> Promise {
+        let result = Promise()
+        var completedPromiseCount = 0
+        let synchronizer = Synchronizer()
+
+        for promise in promises {
+            promise.then(
+                { (value) -> AnyObject? in
+                    synchronizer.synchronize({
+                        completedPromiseCount += 1
+                    })
+                    if (completedPromiseCount == promises.count) {
+                        result.fulfill(promises)
+                    }
+                    return value
+                }, reject: { (error) -> NSError in
+                    result.reject(error)
+                    return error
+                }
+            )
+        }
+
+        return result
     }
 
     /**
