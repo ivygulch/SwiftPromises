@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F80CE8F21AA3AAB40074F2B6 /* SimpleNetworkCallDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80CE8F11AA3AAB40074F2B6 /* SimpleNetworkCallDemoViewController.swift */; };
+		F80CE8F41AA3B3550074F2B6 /* BaseDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80CE8F31AA3B3550074F2B6 /* BaseDemoViewController.swift */; };
 		F83B61591A9EAEA00070549A /* Synchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61581A9EAEA00070549A /* Synchronizer.swift */; };
 		F83B615A1A9F6BA10070549A /* Synchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61581A9EAEA00070549A /* Synchronizer.swift */; };
 		F83B615C1A9F6C3D0070549A /* SynchronizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B615B1A9F6C3D0070549A /* SynchronizerTests.swift */; };
@@ -31,6 +33,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F80CE8F11AA3AAB40074F2B6 /* SimpleNetworkCallDemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleNetworkCallDemoViewController.swift; sourceTree = "<group>"; };
+		F80CE8F31AA3B3550074F2B6 /* BaseDemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseDemoViewController.swift; sourceTree = "<group>"; };
 		F83B61581A9EAEA00070549A /* Synchronizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Synchronizer.swift; sourceTree = "<group>"; };
 		F83B615B1A9F6C3D0070549A /* SynchronizerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SynchronizerTests.swift; sourceTree = "<group>"; };
 		F89674D91A9E58B700FA3AED /* SwiftPromises.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftPromises.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,6 +92,8 @@
 			children = (
 				F89674DE1A9E58B700FA3AED /* AppDelegate.swift */,
 				F89674E01A9E58B700FA3AED /* ViewController.swift */,
+				F80CE8F11AA3AAB40074F2B6 /* SimpleNetworkCallDemoViewController.swift */,
+				F80CE8F31AA3B3550074F2B6 /* BaseDemoViewController.swift */,
 				F89674E21A9E58B700FA3AED /* Main.storyboard */,
 				F89674E51A9E58B700FA3AED /* Images.xcassets */,
 				F89674E71A9E58B700FA3AED /* LaunchScreen.xib */,
@@ -233,6 +239,8 @@
 			files = (
 				F89674E11A9E58B700FA3AED /* ViewController.swift in Sources */,
 				F89674DF1A9E58B700FA3AED /* AppDelegate.swift in Sources */,
+				F80CE8F41AA3B3550074F2B6 /* BaseDemoViewController.swift in Sources */,
+				F80CE8F21AA3AAB40074F2B6 /* SimpleNetworkCallDemoViewController.swift in Sources */,
 				F83B61591A9EAEA00070549A /* Synchronizer.swift in Sources */,
 				F89675061A9E658F00FA3AED /* Promise.swift in Sources */,
 			);
