@@ -1,5 +1,5 @@
 //
-//  SimpleNetworkCallDemoViewController.swift
+//  BaseDemoViewController.swift
 //  SwiftPromises
 //
 //  Created by Douglas Sjoquist on 3/1/15.
@@ -63,6 +63,14 @@ class BaseDemoViewController: UIViewController {
         updateUI()
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        clearStatus()
+    }
+
+    func clearStatus() {
+    }
+
     func handleTextFieldDidChange(textField: UITextField) {
         updateUI()
     }
@@ -102,18 +110,22 @@ class BaseDemoViewController: UIViewController {
         })
     }
 
-    func loadURLPromise(url:NSURL) -> Promise {
+    func loadURLPromise(url:NSURL?) -> Promise {
         let promise = Promise()
 
-        var session = NSURLSession.sharedSession().dataTaskWithURL(url,
-            completionHandler : {[weak self] (data, response, error) -> Void in
-                if let error = error {
-                    promise.reject(error)
-                } else {
-                    promise.fulfill(data)
-                }
-        })
-        session.resume()
+        if let url = url {
+            var session = NSURLSession.sharedSession().dataTaskWithURL(url,
+                completionHandler : {[weak self] (data, response, error) -> Void in
+                    if let error = error {
+                        promise.reject(error)
+                    } else {
+                        promise.fulfill(data)
+                    }
+            })
+            session.resume()
+        } else {
+            promise.reject(NSError(domain:"No URL specified", code:-1, userInfo:nil))
+        }
 
         return promise
     }

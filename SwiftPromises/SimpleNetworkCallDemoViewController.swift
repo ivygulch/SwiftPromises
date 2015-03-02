@@ -16,17 +16,6 @@ class SimpleNetworkCallDemoViewController: BaseDemoViewController {
     @IBOutlet var countStatusImageView:UIImageView?
     @IBOutlet var finalStatusImageView:UIImageView?
 
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        clearStatus()
-    }
-
-    func clearStatus() {
-        urlStatusImageView!.setStatus(nil)
-        countStatusImageView!.setStatus(nil)
-        finalStatusImageView!.setStatus(nil)
-    }
-
     override func readyToStart() -> Bool {
         return (urlTextField!.value != nil) && (countTextField!.value != nil)
     }
