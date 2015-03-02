@@ -60,12 +60,12 @@ class BaseDemoViewController: UIViewController {
         super.viewDidLoad()
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleTextFieldDidChange:", name: UITextFieldTextDidChangeNotification, object: nil)
-        updateUI()
     }
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         clearStatus()
+        updateUI()
     }
 
     func clearStatus() {
@@ -110,7 +110,7 @@ class BaseDemoViewController: UIViewController {
         })
     }
 
-    func loadURLPromise(url:NSURL?) -> Promise {
+    func loadURLPromise(url:NSURL?, delay:NSTimeInterval=0.0) -> Promise {
         let promise = Promise()
 
         if let url = url {
@@ -122,7 +122,19 @@ class BaseDemoViewController: UIViewController {
                         promise.fulfill(data)
                     }
             })
-            session.resume()
+            if delay > 0.0 {
+                let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC)))
+                log("delay \(delay) seconds before loading \(url)")
+                dispatch_after(delayTime, dispatch_get_main_queue()) {
+                    self.log("start loading \(url)")
+                    session.resume()
+                }
+            } else {
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.log("start loading \(url)")
+                    session.resume()
+                }
+            }
         } else {
             promise.reject(NSError(domain:"No URL specified", code:-1, userInfo:nil))
         }

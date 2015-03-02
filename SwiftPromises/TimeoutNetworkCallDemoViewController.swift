@@ -18,6 +18,12 @@ class TimeoutNetworkCallDemoViewController: BaseDemoViewController {
 
     var timeoutTimer:NSTimer?
 
+    override func viewWillAppear(animated: Bool) {
+        urlTextField!.text = "http://cnn.com"
+
+        super.viewWillAppear(animated)
+    }
+
     override func readyToStart() -> Bool {
         return (urlTextField!.value != nil)
     }
@@ -53,7 +59,7 @@ class TimeoutNetworkCallDemoViewController: BaseDemoViewController {
 
         urlPromise.then(
             { [weak self] (value) -> AnyObject? in
-                self?.log("final success: \(value)")
+                self?.log("final success")
                 self?.finalStatusImageView!.setStatus(true)
                 self?.stopActivityIndicator()
                 self?.stopTimer()

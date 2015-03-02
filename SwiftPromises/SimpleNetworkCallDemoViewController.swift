@@ -16,6 +16,12 @@ class SimpleNetworkCallDemoViewController: BaseDemoViewController {
     @IBOutlet var countStatusImageView:UIImageView?
     @IBOutlet var finalStatusImageView:UIImageView?
 
+    override func viewWillAppear(animated: Bool) {
+        urlTextField!.text = "http://cnn.com"
+
+        super.viewWillAppear(animated)
+    }
+
     override func readyToStart() -> Bool {
         return (urlTextField!.value != nil) && (countTextField!.value != nil)
     }
@@ -30,7 +36,7 @@ class SimpleNetworkCallDemoViewController: BaseDemoViewController {
                 return self?.countTextPromise(self?.countTextField!.value, htmlText:value as? String)
         }).then(
             { [weak self] (value) -> AnyObject? in
-                self?.log("final success: \(value)")
+                self?.log("final success")
                 self?.finalStatusImageView!.setStatus(true)
                 self?.stopActivityIndicator()
                 return value
