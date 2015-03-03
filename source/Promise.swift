@@ -8,8 +8,8 @@
 
 import Foundation
 
-typealias kPromiseFulfillClosure = (AnyObject?) -> AnyObject?
-typealias kPromiseRejectClosure = (NSError) -> AnyObject?
+public typealias kPromiseFulfillClosure = (AnyObject?) -> AnyObject?
+public typealias kPromiseRejectClosure = (NSError) -> AnyObject?
 
 private enum PromiseState {
     case Pending([PromiseAction])
@@ -32,11 +32,16 @@ private enum PromiseState {
 *  - Become rejected with an error" (https://gist.github.com/domenic/3889970)
 *
 */
-class Promise {
+@objc public class Promise {
 
     // MARK: - Interface
 
-    class func valueAsPromise(value: AnyObject?) -> Promise {
+    // needed for objc usage since we do not inherit from NSObject
+    public class func newInstance() -> Promise {
+        return Promise()
+    }
+
+    public class func valueAsPromise(value: AnyObject?) -> Promise {
         if let result = value as? Promise {
             return result
         } else {
@@ -44,7 +49,7 @@ class Promise {
         }
     }
 
-    class func all(promises:[Promise]) -> Promise {
+    public class func all(promises:[Promise]) -> Promise {
         let result = Promise()
         var completedPromiseCount = 0
         let synchronizer = Synchronizer()
@@ -100,7 +105,7 @@ class Promise {
     /**
     * Read-only property that is true if the promise is still pending
     */
-    var isPending: Bool {
+    public var isPending: Bool {
         get {
             var result = false
             stateSynchronizer.synchronize {
@@ -118,7 +123,7 @@ class Promise {
     /**
     * Read-only property that is true if the promise has been fulfilled
     */
-    var isFulfilled: Bool {
+    public var isFulfilled: Bool {
         get {
             var result = false
             stateSynchronizer.synchronize {
@@ -136,7 +141,7 @@ class Promise {
     /**
     * Read-only property that is true if the promise has been rejected
     */
-    var isRejected: Bool {
+    public var isRejected: Bool {
         get {
             var result = false
             stateSynchronizer.synchronize {
@@ -154,7 +159,7 @@ class Promise {
     /**
     * Read-only property that is the fulfilled value if the promise has been fulfilled, nil otherwise
     */
-    var value: AnyObject? {
+    public var value: AnyObject? {
         var result:AnyObject? = nil
         stateSynchronizer.synchronize {
             switch (self.state) {
@@ -170,7 +175,7 @@ class Promise {
     /**
     * Read-only property that is the rejection error if the promise has been rejected, nil otherwise
     */
-    var error: NSError? {
+    public var error: NSError? {
         var result:NSError? = nil
         stateSynchronizer.synchronize {
             switch (self.state) {
@@ -190,7 +195,7 @@ class Promise {
     *
     * :param: the fulfilled value to use for the promise
     */
-    func fulfill(value: AnyObject?) {
+    public func fulfill(value: AnyObject?) {
         var promiseActionsToFulfill:[PromiseAction] = []
         stateSynchronizer.synchronize {
             switch (self.state) {
@@ -213,7 +218,7 @@ class Promise {
     *
     * :param: the rejection error to use for the promise
     */
-    func reject(error: NSError) {
+    public func reject(error: NSError) {
         var promiseActionsToReject:[PromiseAction] = []
         stateSynchronizer.synchronize {
             switch (self.state) {
@@ -256,7 +261,7 @@ class Promise {
     *
     * :returns: a new instance of a promise to which application code can add dependent promises (e.g. chaining)
     */
-    func then(fulfill: kPromiseFulfillClosure, reject: kPromiseRejectClosure? = nil) -> Promise {
+    public func then(fulfill: kPromiseFulfillClosure, reject: kPromiseRejectClosure?) -> Promise {
         let result = Promise()
         let promiseAction = PromiseAction(result, fulfill, reject)
         stateSynchronizer.synchronize {
@@ -271,6 +276,11 @@ class Promise {
             }
         }
         return result
+    }
+
+    // Need separate method definition since Objective-C does not recognizer default parameters
+    public func then(fulfill: kPromiseFulfillClosure) -> Promise {
+        return then(fulfill, nil)
     }
 
     // MARK: - implementation

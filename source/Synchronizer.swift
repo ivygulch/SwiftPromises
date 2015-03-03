@@ -8,8 +8,13 @@
 
 import Foundation
 
-class Synchronizer {
+@objc public class Synchronizer {
     private let queue:dispatch_queue_t
+
+    // needed for objc usage since we do not inherit from NSObject
+    public class func newInstance() -> Promise {
+        return Promise()
+    }
 
     init() {
         let uuid = NSUUID().UUIDString
@@ -24,7 +29,7 @@ class Synchronizer {
         self.queue = queue
     }
 
-    func synchronize(closure:()->Void) {
+    public func synchronize(closure:()->Void) {
         dispatch_sync(queue, {
             closure()
         })
