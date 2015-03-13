@@ -56,7 +56,7 @@ class SimpleNetworkCallDemoViewController: BaseDemoViewController {
         loadURLPromise(url).then(
             { [weak self] (value) -> AnyObject? in
                 self?.urlStatusImageView!.setStatus(true)
-                var html:String? = nil
+                var html:String?
                 if let data = value as? NSData {
                     if let dataStr = NSString(data:data, encoding: NSUTF8StringEncoding) {
                         html = dataStr
@@ -89,7 +89,7 @@ class SimpleNetworkCallDemoViewController: BaseDemoViewController {
     }
 
     func countText(textToCount:String?, insideText:String?) -> Int? {
-        var result:Int? = nil
+        var result:Int?
         if let textToCount = textToCount {
             if let insideText = insideText {
                 result = 0

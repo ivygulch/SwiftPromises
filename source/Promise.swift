@@ -160,7 +160,7 @@ private enum PromiseState {
     * Read-only property that is the fulfilled value if the promise has been fulfilled, nil otherwise
     */
     public var value: AnyObject? {
-        var result:AnyObject? = nil
+        var result:AnyObject?
         stateSynchronizer.synchronize {
             switch (self.state) {
             case .Fulfilled(let value):
@@ -176,7 +176,7 @@ private enum PromiseState {
     * Read-only property that is the rejection error if the promise has been rejected, nil otherwise
     */
     public var error: NSError? {
-        var result:NSError? = nil
+        var result:NSError?
         stateSynchronizer.synchronize {
             switch (self.state) {
             case .Rejected(let error):
