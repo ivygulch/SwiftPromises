@@ -79,7 +79,7 @@ private enum PromiseState {
     *
     * :returns: A pending promise with no chained promises
     */
-    init() {
+    public init() {
         state = .Pending([])
     }
 
@@ -94,7 +94,7 @@ private enum PromiseState {
     *
     * :returns: A rejected or fulfilled promise with no chained promises
     */
-    init(_ value:AnyObject?) {
+    public init(_ value:AnyObject?) {
         if let error = value as? NSError {
             state = .Rejected(error)
         } else {
@@ -263,7 +263,7 @@ private enum PromiseState {
     */
     public func then(fulfill: kPromiseFulfillClosure, reject: kPromiseRejectClosure?) -> Promise {
         let result = Promise()
-        let promiseAction = PromiseAction(result, fulfill, reject)
+        let promiseAction = PromiseAction(result, fulfill, rejectClosure: reject)
         stateSynchronizer.synchronize {
             switch (self.state) {
             case .Pending(var promiseActions):
@@ -280,7 +280,7 @@ private enum PromiseState {
 
     // Need separate method definition since Objective-C does not recognizer default parameters
     public func then(fulfill: kPromiseFulfillClosure) -> Promise {
-        return then(fulfill, nil)
+        return then(fulfill, reject: nil)
     }
 
     // MARK: - implementation
@@ -300,6 +300,7 @@ private class PromiseAction {
         self.fulfillClosure = fulfillClosure
         self.rejectClosure = rejectClosure
     }
+    
 
     func fulfill(value: AnyObject?) {
         let result: (AnyObject?) = fulfillClosure(value)
