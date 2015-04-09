@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftPromises
 
 class SimpleNetworkCallDemoViewController: BaseDemoViewController {
 
@@ -59,7 +60,7 @@ class SimpleNetworkCallDemoViewController: BaseDemoViewController {
                 var html:String?
                 if let data = value as? NSData {
                     if let dataStr = NSString(data:data, encoding: NSUTF8StringEncoding) {
-                        html = dataStr
+                        html = dataStr as String
                     }
                 }
                 self?.log("loaded html len=(\(html?.length) from \(url)")

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftPromises
 
 class TimeoutNetworkCallDemoViewController: BaseDemoViewController {
 
@@ -44,7 +45,7 @@ class TimeoutNetworkCallDemoViewController: BaseDemoViewController {
     }
 
     func handleTimeoutTimer(timer:NSTimer) {
-        let promise = timer.userInfo as Promise
+        let promise = timer.userInfo as! Promise
         promise.reject(NSError(domain:"Timeout before completion", code:-1, userInfo:nil))
     }
 

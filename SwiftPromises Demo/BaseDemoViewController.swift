@@ -7,11 +7,12 @@
 //
 
 import UIKit
+import SwiftPromises
 
 extension String {
     var length: Int {
         get {
-            return countElements(self)
+            return count(self)
         }
     }
 
@@ -32,7 +33,7 @@ extension String {
 extension UITextField {
     var value:String? {
         get {
-            return countElements(text) > 0 ? text : nil
+            return count(text) > 0 ? text : nil
         }
     }
 }
