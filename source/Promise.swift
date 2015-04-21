@@ -280,7 +280,7 @@ private enum PromiseState {
 
     // Need separate method definition since Objective-C does not recognizer default parameters
     public func then(fulfill: kPromiseFulfillClosure) -> Promise {
-        return then(fulfill, nil)
+        return then(fulfill, reject: nil)
     }
 
     // MARK: - implementation
@@ -295,7 +295,7 @@ private class PromiseAction {
     private let fulfillClosure: kPromiseFulfillClosure
     private let rejectClosure: kPromiseRejectClosure?
 
-    init(_ promise: Promise, _ fulfillClosure: kPromiseFulfillClosure, rejectClosure: kPromiseRejectClosure?) {
+    init(_ promise: Promise, _ fulfillClosure: kPromiseFulfillClosure, _ rejectClosure: kPromiseRejectClosure?) {
         self.promise = promise
         self.fulfillClosure = fulfillClosure
         self.rejectClosure = rejectClosure
