@@ -16,16 +16,16 @@ import Foundation
         return Promise()
     }
 
-    init() {
+    public init() {
         let uuid = NSUUID().UUIDString
         self.queue = dispatch_queue_create("Sync.\(uuid)",nil)
     }
 
-    init(queueName:String) {
+    public init(queueName:String) {
         self.queue = dispatch_queue_create(queueName,nil)
     }
 
-    init(queue:dispatch_queue_t) {
+    public init(queue:dispatch_queue_t) {
         self.queue = queue
     }
 

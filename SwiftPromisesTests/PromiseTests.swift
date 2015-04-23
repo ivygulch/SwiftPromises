@@ -8,9 +8,10 @@
 
 import Foundation
 import XCTest
+import SwiftPromises
 
 /// like XCTAssertEqual, but handles optional unwrapping
-func XCTAssertEqualOptional<T:Equatable>(expression1: @autoclosure () -> T?, expression2: @autoclosure () -> T?, _ message: String? = nil, file: String = __FILE__, line: UInt = __LINE__) {
+func XCTAssertEqualOptional<T:Equatable>(@autoclosure expression1:  () -> T?, @autoclosure expression2:  () -> T?, _ message: String? = nil, file: String = __FILE__, line: UInt = __LINE__) {
     if let exp1 = expression1() {
         if let exp2 = expression2() {
             XCTAssertEqual(exp1, exp2, (message != nil) ? message! : "", file: file, line: line)

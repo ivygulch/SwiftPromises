@@ -79,7 +79,7 @@ private enum PromiseState {
     *
     * :returns: A pending promise with no chained promises
     */
-    init() {
+    public init() {
         state = .Pending([])
     }
 
@@ -94,7 +94,7 @@ private enum PromiseState {
     *
     * :returns: A rejected or fulfilled promise with no chained promises
     */
-    init(_ value:AnyObject?) {
+    public init(_ value:AnyObject?) {
         if let error = value as? NSError {
             state = .Rejected(error)
         } else {
@@ -160,7 +160,7 @@ private enum PromiseState {
     * Read-only property that is the fulfilled value if the promise has been fulfilled, nil otherwise
     */
     public var value: AnyObject? {
-        var result:AnyObject? = nil
+        var result:AnyObject?
         stateSynchronizer.synchronize {
             switch (self.state) {
             case .Fulfilled(let value):
@@ -176,7 +176,7 @@ private enum PromiseState {
     * Read-only property that is the rejection error if the promise has been rejected, nil otherwise
     */
     public var error: NSError? {
-        var result:NSError? = nil
+        var result:NSError?
         stateSynchronizer.synchronize {
             switch (self.state) {
             case .Rejected(let error):
@@ -263,7 +263,7 @@ private enum PromiseState {
     */
     public func then(fulfill: kPromiseFulfillClosure, reject: kPromiseRejectClosure?) -> Promise {
         let result = Promise()
-        let promiseAction = PromiseAction(result, fulfill, reject)
+        let promiseAction = PromiseAction(result, fulfill, rejectClosure: reject)
         stateSynchronizer.synchronize {
             switch (self.state) {
             case .Pending(var promiseActions):
@@ -300,6 +300,7 @@ private class PromiseAction {
         self.fulfillClosure = fulfillClosure
         self.rejectClosure = rejectClosure
     }
+    
 
     func fulfill(value: AnyObject?) {
         let result: (AnyObject?) = fulfillClosure(value)

@@ -8,6 +8,7 @@
 
 import Foundation
 import XCTest
+import SwiftPromises
 
 class SynchronizerTests: XCTestCase {
 
