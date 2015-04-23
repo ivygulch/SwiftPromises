@@ -263,7 +263,7 @@ private enum PromiseState {
     */
     public func then(fulfill: kPromiseFulfillClosure, reject: kPromiseRejectClosure?) -> Promise {
         let result = Promise()
-        let promiseAction = PromiseAction(result, fulfill, rejectClosure: reject)
+        let promiseAction = PromiseAction(result, fulfill, reject)
         stateSynchronizer.synchronize {
             switch (self.state) {
             case .Pending(var promiseActions):
@@ -295,7 +295,7 @@ private class PromiseAction {
     private let fulfillClosure: kPromiseFulfillClosure
     private let rejectClosure: kPromiseRejectClosure?
 
-    init(_ promise: Promise, _ fulfillClosure: kPromiseFulfillClosure, rejectClosure: kPromiseRejectClosure?) {
+    init(_ promise: Promise, _ fulfillClosure: kPromiseFulfillClosure, _ rejectClosure: kPromiseRejectClosure?) {
         self.promise = promise
         self.fulfillClosure = fulfillClosure
         self.rejectClosure = rejectClosure
