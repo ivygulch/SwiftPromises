@@ -77,7 +77,7 @@ private enum PromiseState {
     /**
     * Initializes a new pending promise
     *
-    * :returns: A pending promise with no chained promises
+    * - returns: A pending promise with no chained promises
     */
     public init() {
         state = .Pending([])
@@ -92,7 +92,7 @@ private enum PromiseState {
     * This can be useful when an async user code process needs to return a promise, but already
     * has the result (such as with a completed network request, database query, etc.)
     *
-    * :returns: A rejected or fulfilled promise with no chained promises
+    * - returns: A rejected or fulfilled promise with no chained promises
     */
     public init(_ value:AnyObject?) {
         if let error = value as? NSError {
@@ -193,7 +193,7 @@ private enum PromiseState {
     * and notify any chained promises that it has been fulfilled.  If the promise is in any other
     * state, no changes are made and any chained promises are ignored.
     *
-    * :param: the fulfilled value to use for the promise
+    * - parameter the: fulfilled value to use for the promise
     */
     public func fulfill(value: AnyObject?) {
         var promiseActionsToFulfill:[PromiseAction] = []
@@ -203,7 +203,7 @@ private enum PromiseState {
                 self.state = .Fulfilled(value)
                 promiseActionsToFulfill = promiseActions
             default:
-                println("WARN: cannot fulfill promise, state already set to \(self.state)")
+                print("WARN: cannot fulfill promise, state already set to \(self.state)")
             }
         }
         for promiseAction in promiseActionsToFulfill {
@@ -216,7 +216,7 @@ private enum PromiseState {
     * and notify any chained promises that it has been rejected.  If the promise is in any other
     * state, no changes are made and any chained promises are ignored.
     *
-    * :param: the rejection error to use for the promise
+    * - parameter the: rejection error to use for the promise
     */
     public func reject(error: NSError) {
         var promiseActionsToReject:[PromiseAction] = []
@@ -226,7 +226,7 @@ private enum PromiseState {
                 self.state = .Rejected(error)
                 promiseActionsToReject = promiseActions
             default:
-                println("WARN: cannot reject promise, state already set to \(self.state)")
+                print("WARN: cannot reject promise, state already set to \(self.state)")
             }
         }
         for promiseAction in promiseActionsToReject {
@@ -251,15 +251,15 @@ private enum PromiseState {
     *
     * If the promise is already rejected, then if the reject closure exists, it will be called immediately
     *
-    * :param: fulfill closure to call when the promise is fulfilled
+    * - parameter fulfill: closure to call when the promise is fulfilled
     *   It can return:
     *       an NSError: it will cause any dependent promises to be rejected with this error
     *       a Promise: it will be chained to this instance
     *       any other value including nil: it will cause any dependent promises to be fulfilled with this value
     *
-    * :param: optional rejection closure to call when the promise is rejected
+    * - parameter optional: rejection closure to call when the promise is rejected
     *
-    * :returns: a new instance of a promise to which application code can add dependent promises (e.g. chaining)
+    * - returns: a new instance of a promise to which application code can add dependent promises (e.g. chaining)
     */
     public func then(fulfill: kPromiseFulfillClosure, reject: kPromiseRejectClosure?) -> Promise {
         let result = Promise()
