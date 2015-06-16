@@ -110,7 +110,7 @@ private enum PromiseState {
             var result = false
             stateSynchronizer.synchronize {
                 switch (self.state) {
-                case .Pending(let promiseActions):
+                case .Pending( _):
                     result = true
                 default:
                     result = false
@@ -128,7 +128,7 @@ private enum PromiseState {
             var result = false
             stateSynchronizer.synchronize {
                 switch (self.state) {
-                case .Fulfilled(let value):
+                case .Fulfilled( _):
                     result = true
                 default:
                     result = false
@@ -146,7 +146,7 @@ private enum PromiseState {
             var result = false
             stateSynchronizer.synchronize {
                 switch (self.state) {
-                case .Rejected(let error):
+                case .Rejected( _):
                     result = true
                 default:
                     result = false
