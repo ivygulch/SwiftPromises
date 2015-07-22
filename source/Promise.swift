@@ -32,7 +32,7 @@ private enum PromiseState {
 *  - Become rejected with an error" (https://gist.github.com/domenic/3889970)
 *
 */
-@objc public class Promise {
+@objc public class Promise : NSObject {
 
     // MARK: - Interface
 
@@ -79,7 +79,7 @@ private enum PromiseState {
     *
     * - returns: A pending promise with no chained promises
     */
-    public init() {
+    public override init() {
         state = .Pending([])
     }
 
