@@ -17,7 +17,7 @@
 		F80CE8F41AA3B3550074F2B6 /* BaseDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80CE8F31AA3B3550074F2B6 /* BaseDemoViewController.swift */; };
 		F83C37971BDD78AD0019D65A /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83C37951BDD78AD0019D65A /* Promise.swift */; settings = {ASSET_TAGS = (); }; };
 		F83C37981BDD78AD0019D65A /* Synchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83C37961BDD78AD0019D65A /* Synchronizer.swift */; settings = {ASSET_TAGS = (); }; };
-		F83C379A1BDD78C70019D65A /* SwiftPromises.h in Headers */ = {isa = PBXBuildFile; fileRef = F83C37991BDD78C70019D65A /* SwiftPromises.h */; settings = {ASSET_TAGS = (); }; };
+		F83C379A1BDD78C70019D65A /* SwiftPromises.h in Headers */ = {isa = PBXBuildFile; fileRef = F83C37991BDD78C70019D65A /* SwiftPromises.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F85110701AA3DD170084234A /* ChainedNetworkCallDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F851106F1AA3DD170084234A /* ChainedNetworkCallDemoViewController.swift */; };
 		F85110721AA3E7C60084234A /* TimeoutNetworkCallDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85110711AA3E7C60084234A /* TimeoutNetworkCallDemoViewController.swift */; };
 		F85110741AA49ACF0084234A /* CompoundNetworkCallDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85110731AA49ACF0084234A /* CompoundNetworkCallDemoViewController.swift */; };
@@ -288,8 +288,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F89674D81A9E58B700FA3AED /* SwiftPromisesDemo */,
 				20CC32391ACDF80F00231894 /* SwiftPromises */,
+				F89674D81A9E58B700FA3AED /* SwiftPromisesDemo */,
 				20CC32431ACDF80F00231894 /* SwiftPromisesTests */,
 			);
 		};
