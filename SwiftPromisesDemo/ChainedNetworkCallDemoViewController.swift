@@ -79,11 +79,11 @@ class ChainedNetworkCallDemoViewController: BaseDemoViewController {
     }
 
     func loadURLStepPromise(urlString:String?, statusImageView:UIImageView?) -> Promise {
-        var url:NSURL? = (urlString == nil) ? nil : NSURL(string:urlString!)
+        let url:NSURL? = (urlString == nil) ? nil : NSURL(string:urlString!)
         return loadURLPromise(url).then(
             { [weak self] (value) -> AnyObject? in
                 statusImageView?.setStatus(true)
-                var data:NSData? = value as? NSData
+                let data:NSData? = value as? NSData
                 self?.log("loaded \(data?.length) bytes from URL \(url)")
                 return value
             }, reject: { [weak self] (error) -> AnyObject? in

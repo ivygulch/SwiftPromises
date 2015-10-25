@@ -35,44 +35,47 @@ class SimpleNetworkCallDemoViewController: BaseDemoViewController {
         loadHTMLFromURLPromise().then(
             { [weak self] (value) -> AnyObject? in
                 return self?.countTextPromise(self?.countTextField!.value, htmlText:value as? String)
-        }).then(
-            { [weak self] (value) -> AnyObject? in
-                self?.log("final success")
-                self?.finalStatusImageView!.setStatus(true)
-                self?.stopActivityIndicator()
-                return value
-            }, reject: { [weak self] (error) -> AnyObject? in
-                self?.log("final error: \(error.localizedDescription)")
-                self?.finalStatusImageView!.setStatus(false)
-                self?.stopActivityIndicator()
-                return error
-            }
+            }).then(
+                { [weak self] (value) -> AnyObject? in
+                    self?.log("final success")
+                    self?.finalStatusImageView!.setStatus(true)
+                    self?.stopActivityIndicator()
+                    return value
+                }, reject: { [weak self] (error) -> AnyObject? in
+                    self?.log("final error: \(error.localizedDescription)")
+                    self?.finalStatusImageView!.setStatus(false)
+                    self?.stopActivityIndicator()
+                    return error
+                }
         )
 
     }
 
     func loadHTMLFromURLPromise() -> Promise {
         let promise = Promise()
-        let url = NSURL(string:urlTextField!.text)!
-        loadURLPromise(url).then(
-            { [weak self] (value) -> AnyObject? in
-                self?.urlStatusImageView!.setStatus(true)
-                var html:String?
-                if let data = value as? NSData {
-                    if let dataStr = NSString(data:data, encoding: NSUTF8StringEncoding) {
-                        html = dataStr as String
+        if let text = urlTextField?.text, url = NSURL(string:text) {
+            loadURLPromise(url).then(
+                { [weak self] (value) -> AnyObject? in
+                    self?.urlStatusImageView!.setStatus(true)
+                    var html:String?
+                    if let data = value as? NSData {
+                        if let dataStr = NSString(data:data, encoding: NSUTF8StringEncoding) {
+                            html = dataStr as String
+                        }
                     }
+                    self?.log("loaded html len=(\(html?.length) from \(url)")
+                    promise.fulfill(html)
+                    return value
+                }, reject: { [weak self] (error) -> AnyObject? in
+                    self?.urlStatusImageView!.setStatus(false)
+                    self?.log("error loading \(url): \(error.localizedDescription)")
+                    promise.reject(error)
+                    return error
                 }
-                self?.log("loaded html len=(\(html?.length) from \(url)")
-                promise.fulfill(html)
-                return value
-            }, reject: { [weak self] (error) -> AnyObject? in
-                self?.urlStatusImageView!.setStatus(false)
-                self?.log("error loading \(url): \(error.localizedDescription)")
-                promise.reject(error)
-                return error
-            }
-        )
+            )
+        } else {
+            promise.reject(NSError(domain:"Bad url", code:-1, userInfo:nil))
+        }
 
         return promise
     }
@@ -104,5 +107,5 @@ class SimpleNetworkCallDemoViewController: BaseDemoViewController {
         }
         return result
     }
-
+    
 }

@@ -10,19 +10,6 @@ import Foundation
 import XCTest
 import SwiftPromises
 
-/// like XCTAssertEqual, but handles optional unwrapping
-func XCTAssertEqualOptional<T:Equatable>(@autoclosure expression1:  () -> T?, @autoclosure expression2:  () -> T?, _ message: String? = nil, file: String = __FILE__, line: UInt = __LINE__) {
-    if let exp1 = expression1() {
-        if let exp2 = expression2() {
-            XCTAssertEqual(exp1, exp2, (message != nil) ? message! : "", file: file, line: line)
-        } else {
-            XCTFail((message != nil) ? message! : "exp1 != nil, exp2 == nil", file: file, line: line)
-        }
-    } else if let exp2 = expression2() {
-        XCTFail((message != nil) ? message! : "exp1 == nil, exp2 != nil", file: file, line: line)
-    }
-}
-
 class PromiseTests: XCTestCase {
 
     override func setUp() {
@@ -49,7 +36,7 @@ class PromiseTests: XCTestCase {
         XCTAssertFalse(promise.isPending)
         XCTAssertTrue(promise.isFulfilled)
         XCTAssertFalse(promise.isRejected)
-        XCTAssertEqualOptional("test", promise.value as? String)
+        XCTAssertEqual("test", promise.value as? String)
         XCTAssertNil(promise.error)
     }
 
@@ -59,7 +46,7 @@ class PromiseTests: XCTestCase {
         XCTAssertFalse(promise.isPending)
         XCTAssertFalse(promise.isFulfilled)
         XCTAssertTrue(promise.isRejected)
-        XCTAssertEqualOptional(error, promise.error)
+        XCTAssertEqual(error, promise.error)
         XCTAssertNil(promise.value)
     }
 
@@ -170,7 +157,7 @@ class PromiseTests: XCTestCase {
         let expectation1 = expectationWithDescription("expectation1")
         let expectation3 = expectationWithDescription("expectation3")
         let promise3 = Promise()
-        let promise2 = promise1.then(
+        promise1.then(
             { (value1) -> AnyObject? in
                 expectation1.fulfill()
 
@@ -245,7 +232,6 @@ class PromiseTests: XCTestCase {
         let expectation1 = expectationWithDescription("expectation1")
         let expectation2 = expectationWithDescription("expectation2")
         let expectation3 = expectationWithDescription("expectation3")
-        let expectedValue = "test"
         let expectedError = NSError(domain:"test", code:-1, userInfo:nil)
         let promise2 = promise1.then(
             { (value1) -> AnyObject? in
@@ -291,7 +277,6 @@ class PromiseTests: XCTestCase {
         let timeout:NSTimeInterval = 5.0
         let expectation1 = expectationWithDescription("expectation1")
         let expectation2 = expectationWithDescription("expectation2")
-        let expectedValue = "test"
         let expectedError = NSError(domain:"test", code:-1, userInfo:nil)
         let promise2 = promise1.then(
             { (value1) -> AnyObject? in
@@ -374,7 +359,7 @@ class PromiseTests: XCTestCase {
         let expectation = expectationWithDescription("expectation")
 
         var expectedPromises:[Promise] = []
-        for index in 0..<5 {
+        for _ in 0..<5 {
             expectedPromises.append(Promise())
         }
         let promiseAll = Promise.all(expectedPromises)
@@ -384,7 +369,7 @@ class PromiseTests: XCTestCase {
                     XCTAssertEqual(expectedPromises.count, actualPromises.count)
                     for index in 0..<actualPromises.count {
                         let actualPromise = actualPromises[index]
-                        XCTAssertEqualOptional("test\(index)", actualPromise.value as? String)
+                        XCTAssertEqual("test\(index)", actualPromise.value as? String)
                     }
                 } else {
                     XCTFail("should return list of fulfilled promises")
@@ -420,7 +405,7 @@ class PromiseTests: XCTestCase {
                     XCTAssertEqual(expectedPromises.count, actualPromises.count)
                     for index in 0..<actualPromises.count {
                         let actualPromise = actualPromises[index]
-                        XCTAssertEqualOptional("test\(index)", actualPromise.value as? String)
+                        XCTAssertEqual("test\(index)", actualPromise.value as? String)
                     }
                 } else {
                     XCTFail("should return list of fulfilled promises")
@@ -442,7 +427,7 @@ class PromiseTests: XCTestCase {
 
         var expectedPromises:[Promise] = []
         let indexToReject=1
-        for index in 0..<5 {
+        for _ in 0..<5 {
             expectedPromises.append(Promise())
         }
 

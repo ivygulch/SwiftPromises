@@ -54,26 +54,26 @@ class TimeoutNetworkCallDemoViewController: BaseDemoViewController {
         clearLog()
 
         startActivityIndicator()
-        let url = NSURL(string:urlTextField!.text)!
-        let urlPromise = loadURLPromise(url)
-        startTimer(urlPromise)
+        if let text = urlTextField?.text, url = NSURL(string:text) {
+            let urlPromise = loadURLPromise(url)
+            startTimer(urlPromise)
 
-        urlPromise.then(
-            { [weak self] (value) -> AnyObject? in
-                self?.log("final success")
-                self?.finalStatusImageView!.setStatus(true)
-                self?.stopActivityIndicator()
-                self?.stopTimer()
-                return value
-            }, reject: { [weak self] (error) -> AnyObject? in
-                self?.log("final error: \(error.localizedDescription)")
-                self?.finalStatusImageView!.setStatus(false)
-                self?.stopActivityIndicator()
-                self?.stopTimer()
-                return error
-            }
-        )
-
+            urlPromise.then(
+                { [weak self] (value) -> AnyObject? in
+                    self?.log("final success")
+                    self?.finalStatusImageView!.setStatus(true)
+                    self?.stopActivityIndicator()
+                    self?.stopTimer()
+                    return value
+                }, reject: { [weak self] (error) -> AnyObject? in
+                    self?.log("final error: \(error.localizedDescription)")
+                    self?.finalStatusImageView!.setStatus(false)
+                    self?.stopActivityIndicator()
+                    self?.stopTimer()
+                    return error
+                }
+            )
+        }
     }
 
     @IBAction func timeoutStepperAction(stepper:UIStepper) {

@@ -12,17 +12,17 @@ import SwiftPromises
 extension String {
     var length: Int {
         get {
-            return count(self)
+            return self.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)
         }
     }
 
     func indexOf(target: String, startIndex: Int) -> Int {
-        var startRange = advance(self.startIndex, startIndex)
+        let startRange = self.startIndex.advancedBy(startIndex)
 
-        var range = self.rangeOfString(target, options: NSStringCompareOptions.LiteralSearch, range: Range<String.Index>(start: startRange, end: self.endIndex))
+        let range = self.rangeOfString(target, options: NSStringCompareOptions.LiteralSearch, range: Range<String.Index>(start: startRange, end: self.endIndex))
 
         if let range = range {
-            return distance(self.startIndex, range.startIndex)
+            return self.startIndex.distanceTo(range.startIndex)
         } else {
             return -1
         }
@@ -33,7 +33,7 @@ extension String {
 extension UITextField {
     var value:String? {
         get {
-            return count(text) > 0 ? text : nil
+            return text?.length > 0 ? text : nil
         }
     }
 }
@@ -96,7 +96,7 @@ class BaseDemoViewController: UIViewController {
     }
 
     func log(s:String) {
-        println("LOG: \(s)")
+        print("LOG: \(s)")
         var scrollToLoc:Int = 0
         var text = logTextView!.text
         if text.length > 0 {
@@ -115,8 +115,8 @@ class BaseDemoViewController: UIViewController {
         let promise = Promise()
 
         if let url = url {
-            var session = NSURLSession.sharedSession().dataTaskWithURL(url,
-                completionHandler : {[weak self] (data, response, error) -> Void in
+            let session = NSURLSession.sharedSession().dataTaskWithURL(url,
+                completionHandler : {(data, response, error) -> Void in
                     if let error = error {
                         promise.reject(error)
                     } else {
