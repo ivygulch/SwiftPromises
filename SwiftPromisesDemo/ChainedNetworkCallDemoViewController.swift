@@ -47,45 +47,44 @@ class ChainedNetworkCallDemoViewController: BaseDemoViewController {
 
         loadURL1StepPromise().then(
             { [weak self] value in
-                return self?.loadURL2StepPromise()
+                return .Pending(self!.loadURL2StepPromise())
         } ).then(
             { [weak self] value in
-                return self?.loadURL3StepPromise()
+                return .Pending(self!.loadURL3StepPromise())
         }).then(
             { [weak self] value in
                 self?.log("final success")
                 self?.finalStatusImageView!.setStatus(true)
                 self?.stopActivityIndicator()
-                return value
+                return .Value(value)
             }, reject: { [weak self] error in
-                self?.log("final error: \(error.localizedDescription)")
+                self?.log("final error: \(error)")
                 self?.finalStatusImageView!.setStatus(false)
                 self?.stopActivityIndicator()
-                return error
+                return .Error(error)
         })
 
     }
 
-    func loadURL1StepPromise() -> Promise<AnyObject> {
+    func loadURL1StepPromise() -> Promise<NSData> {
         return loadURLStepPromise(url1TextField!.text, statusImageView:url1StatusImageView!)
     }
 
-    func loadURL2StepPromise() -> Promise<AnyObject> {
+    func loadURL2StepPromise() -> Promise<NSData> {
         return loadURLStepPromise(url2TextField!.text, statusImageView:url2StatusImageView!)
     }
 
-    func loadURL3StepPromise() -> Promise<AnyObject> {
+    func loadURL3StepPromise() -> Promise<NSData> {
         return loadURLStepPromise(url3TextField!.text, statusImageView:url3StatusImageView!)
     }
 
-    func loadURLStepPromise(urlString:String?, statusImageView:UIImageView?) -> Promise<AnyObject> {
+    func loadURLStepPromise(urlString:String?, statusImageView:UIImageView?) -> Promise<NSData> {
         let url:NSURL? = (urlString == nil) ? nil : NSURL(string:urlString!)
         return loadURLPromise(url).then(
             { [weak self] value in
                 statusImageView?.setStatus(true)
-                let data:NSData? = value as? NSData
-                self?.log("loaded \(data?.length) bytes from URL \(url)")
-                return value
+                self?.log("loaded \(value?.length) bytes from URL \(url)")
+                return .Value(value)
             }, reject: { [weak self] error in
                 statusImageView?.setStatus(false)
                 var stopOnError = true
@@ -93,11 +92,11 @@ class ChainedNetworkCallDemoViewController: BaseDemoViewController {
                     stopOnError = stopOnErrorSwitch.on
                 }
                 if stopOnError {
-                    self?.log("Stopping on error while loading URL \(url): \(error.localizedDescription)")
-                    return error
+                    self?.log("Stopping on error while loading URL \(url): \(error)")
+                    return .Error(error)
                 } else {
-                    self?.log("Ignore error while loading URL \(url): \(error.localizedDescription)")
-                    return nil // don't stop the chain
+                    self?.log("Ignore error while loading URL \(url): \(error)")
+                    return .Value(nil) // don't stop the chain
                 }
             }
         )

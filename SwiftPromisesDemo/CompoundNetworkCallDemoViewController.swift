@@ -62,55 +62,67 @@ class CompoundNetworkCallDemoViewController: BaseDemoViewController {
 
         loadURL1StepPromise().then(
             { [weak self] value in
+                let result:Promise<NSData> = Promise()
                 self?.log("loading promise2a and promise2b")
-                var promises:[Promise] = []
+                var promises:[Promise<NSData>] = []
                 if let strongSelf = self {
                     promises.append(strongSelf.loadURL2aStepPromise())
                     promises.append(strongSelf.loadURL2bStepPromise())
                 }
-                return Promise.all(promises)
+                Promise.all(promises).then(
+                    {
+                        value in
+                        result.fulfill(nil)
+                        return .Value(value)
+                    },
+                    reject: {
+                        error in
+                        result.reject(error)
+                        return .Error(error)
+                    }
+                )
+                return .Pending(result)
         } ).then(
             { [weak self] value in
-                return self?.loadURL3StepPromise()
+                return .Pending(self!.loadURL3StepPromise())
         }).then(
             { [weak self] value in
                 self?.log("final success")
                 self?.finalStatusImageView!.setStatus(true)
                 self?.stopActivityIndicator()
-                return value
+                return .Value(value)
             }, reject: { [weak self] error in
-                self?.log("final error: \(error.localizedDescription)")
+                self?.log("final error: \(error)")
                 self?.finalStatusImageView!.setStatus(false)
                 self?.stopActivityIndicator()
-                return error
+                return .Error(error)
         })
 
     }
 
-    func loadURL1StepPromise() -> Promise<AnyObject> {
+    func loadURL1StepPromise() -> Promise<NSData> {
         return loadURLStepPromise(url1TextField!.text, statusImageView:url1StatusImageView!, delay:0.0)
     }
 
-    func loadURL2aStepPromise() -> Promise<AnyObject> {
+    func loadURL2aStepPromise() -> Promise<NSData> {
         return loadURLStepPromise(url2aTextField!.text, statusImageView:url2aStatusImageView!, delay:delay2aStepper!.value)
     }
 
-    func loadURL2bStepPromise() -> Promise<AnyObject> {
+    func loadURL2bStepPromise() -> Promise<NSData> {
         return loadURLStepPromise(url2bTextField!.text, statusImageView:url2bStatusImageView!, delay:delay2bStepper!.value)
     }
 
-    func loadURL3StepPromise() -> Promise<AnyObject> {
+    func loadURL3StepPromise() -> Promise<NSData> {
         return loadURLStepPromise(url3TextField!.text, statusImageView:url3StatusImageView!, delay:0.0)
     }
 
-    func loadURLStepPromise(urlString:String?, statusImageView:UIImageView?, delay:NSTimeInterval) -> Promise<AnyObject> {
+    func loadURLStepPromise(urlString:String?, statusImageView:UIImageView?, delay:NSTimeInterval) -> Promise<NSData> {
         let url:NSURL? = (urlString == nil) ? nil : NSURL(string:urlString!)
         return loadURLPromise(url, delay:delay).then(
             { [weak self] value in
                 statusImageView?.setStatus(true)
-                let data:NSData? = value as? NSData
-                self?.log("loaded \(data?.length) bytes from URL \(url)")
-                return value
+                self?.log("loaded \(value?.length) bytes from URL \(url)")
+                return .Value(value)
             }, reject: { [weak self] error in
                 statusImageView?.setStatus(false)
                 var stopOnError = true
@@ -118,11 +130,11 @@ class CompoundNetworkCallDemoViewController: BaseDemoViewController {
                     stopOnError = stopOnErrorSwitch.on
                 }
                 if stopOnError {
-                    self?.log("Stopping on error while loading URL \(url): \(error.localizedDescription)")
-                    return error
+                    self?.log("Stopping on error while loading URL \(url): \(error)")
+                    return .Error(error)
                 } else {
-                    self?.log("Ignore error while loading URL \(url): \(error.localizedDescription)")
-                    return nil // don't stop the chain
+                    self?.log("Ignore error while loading URL \(url): \(error)")
+                    return .Value(nil) // don't stop the chain
                 }
             }
         )

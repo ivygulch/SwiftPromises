@@ -35,7 +35,7 @@ class TimeoutNetworkCallDemoViewController: BaseDemoViewController {
         timeoutLabel!.text =  "Timeout: \(timeoutStepper!.value)"
     }
 
-    func startTimer(promise:Promise<AnyObject>) {
+    func startTimer(promise:Promise<NSData>) {
         timeoutTimer = NSTimer.scheduledTimerWithTimeInterval(timeoutStepper!.value, target:self, selector:"handleTimeoutTimer:", userInfo:promise, repeats:false)
     }
 
@@ -45,7 +45,7 @@ class TimeoutNetworkCallDemoViewController: BaseDemoViewController {
     }
 
     func handleTimeoutTimer(timer:NSTimer) {
-        let promise = timer.userInfo as! Promise<AnyObject>
+        let promise = timer.userInfo as! Promise<NSData>
         promise.reject(NSError(domain:"Timeout before completion", code:-1, userInfo:nil))
     }
 
