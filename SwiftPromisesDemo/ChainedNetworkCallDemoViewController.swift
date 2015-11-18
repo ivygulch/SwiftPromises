@@ -46,18 +46,18 @@ class ChainedNetworkCallDemoViewController: BaseDemoViewController {
         startActivityIndicator()
 
         loadURL1StepPromise().then(
-            { [weak self] (value) -> AnyObject? in
+            { [weak self] value in
                 return self?.loadURL2StepPromise()
         } ).then(
-            { [weak self] (value) -> AnyObject? in
+            { [weak self] value in
                 return self?.loadURL3StepPromise()
         }).then(
-            { [weak self] (value) -> AnyObject? in
+            { [weak self] value in
                 self?.log("final success")
                 self?.finalStatusImageView!.setStatus(true)
                 self?.stopActivityIndicator()
                 return value
-            }, reject: { [weak self] (error) -> AnyObject? in
+            }, reject: { [weak self] error in
                 self?.log("final error: \(error.localizedDescription)")
                 self?.finalStatusImageView!.setStatus(false)
                 self?.stopActivityIndicator()
@@ -66,27 +66,27 @@ class ChainedNetworkCallDemoViewController: BaseDemoViewController {
 
     }
 
-    func loadURL1StepPromise() -> Promise {
+    func loadURL1StepPromise() -> Promise<AnyObject> {
         return loadURLStepPromise(url1TextField!.text, statusImageView:url1StatusImageView!)
     }
 
-    func loadURL2StepPromise() -> Promise {
+    func loadURL2StepPromise() -> Promise<AnyObject> {
         return loadURLStepPromise(url2TextField!.text, statusImageView:url2StatusImageView!)
     }
 
-    func loadURL3StepPromise() -> Promise {
+    func loadURL3StepPromise() -> Promise<AnyObject> {
         return loadURLStepPromise(url3TextField!.text, statusImageView:url3StatusImageView!)
     }
 
-    func loadURLStepPromise(urlString:String?, statusImageView:UIImageView?) -> Promise {
+    func loadURLStepPromise(urlString:String?, statusImageView:UIImageView?) -> Promise<AnyObject> {
         let url:NSURL? = (urlString == nil) ? nil : NSURL(string:urlString!)
         return loadURLPromise(url).then(
-            { [weak self] (value) -> AnyObject? in
+            { [weak self] value in
                 statusImageView?.setStatus(true)
                 let data:NSData? = value as? NSData
                 self?.log("loaded \(data?.length) bytes from URL \(url)")
                 return value
-            }, reject: { [weak self] (error) -> AnyObject? in
+            }, reject: { [weak self] error in
                 statusImageView?.setStatus(false)
                 var stopOnError = true
                 if let stopOnErrorSwitch = self?.stopOnErrorSwitch {

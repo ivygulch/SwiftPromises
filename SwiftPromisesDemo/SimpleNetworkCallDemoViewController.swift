@@ -33,15 +33,15 @@ class SimpleNetworkCallDemoViewController: BaseDemoViewController {
 
         startActivityIndicator()
         loadHTMLFromURLPromise().then(
-            { [weak self] (value) -> AnyObject? in
+            { [weak self] value in
                 return self?.countTextPromise(self?.countTextField!.value, htmlText:value as? String)
             }).then(
-                { [weak self] (value) -> AnyObject? in
+                { [weak self] value in
                     self?.log("final success")
                     self?.finalStatusImageView!.setStatus(true)
                     self?.stopActivityIndicator()
                     return value
-                }, reject: { [weak self] (error) -> AnyObject? in
+                }, reject: { [weak self] error in
                     self?.log("final error: \(error.localizedDescription)")
                     self?.finalStatusImageView!.setStatus(false)
                     self?.stopActivityIndicator()
@@ -51,11 +51,11 @@ class SimpleNetworkCallDemoViewController: BaseDemoViewController {
 
     }
 
-    func loadHTMLFromURLPromise() -> Promise {
+    func loadHTMLFromURLPromise() -> Promise<AnyObject> {
         let promise = Promise()
         if let text = urlTextField?.text, url = NSURL(string:text) {
             loadURLPromise(url).then(
-                { [weak self] (value) -> AnyObject? in
+                { [weak self] value in
                     self?.urlStatusImageView!.setStatus(true)
                     var html:String?
                     if let data = value as? NSData {
@@ -66,7 +66,7 @@ class SimpleNetworkCallDemoViewController: BaseDemoViewController {
                     self?.log("loaded html len=(\(html?.length) from \(url)")
                     promise.fulfill(html)
                     return value
-                }, reject: { [weak self] (error) -> AnyObject? in
+                }, reject: { [weak self] error in
                     self?.urlStatusImageView!.setStatus(false)
                     self?.log("error loading \(url): \(error.localizedDescription)")
                     promise.reject(error)
@@ -80,7 +80,7 @@ class SimpleNetworkCallDemoViewController: BaseDemoViewController {
         return promise
     }
 
-    func countTextPromise(textToCount:String?, htmlText:String?) -> Promise {
+    func countTextPromise(textToCount:String?, htmlText:String?) -> Promise<AnyObject> {
         if let count = countText(textToCount, insideText:htmlText) {
             log("found \(count) occurences of '\(textToCount!)' in html")
             countStatusImageView!.setStatus(true)

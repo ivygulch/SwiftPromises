@@ -111,8 +111,8 @@ class BaseDemoViewController: UIViewController {
         })
     }
 
-    func loadURLPromise(url:NSURL?, delay:NSTimeInterval=0.0) -> Promise {
-        let promise = Promise()
+    func loadURLPromise(url:NSURL?, delay:NSTimeInterval=0.0) -> Promise<AnyObject> {
+        let promise:Promise<AnyObject> = Promise()
 
         if let url = url {
             let session = NSURLSession.sharedSession().dataTaskWithURL(url,

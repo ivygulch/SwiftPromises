@@ -61,7 +61,7 @@ class CompoundNetworkCallDemoViewController: BaseDemoViewController {
         startActivityIndicator()
 
         loadURL1StepPromise().then(
-            { [weak self] (value) -> AnyObject? in
+            { [weak self] value in
                 self?.log("loading promise2a and promise2b")
                 var promises:[Promise] = []
                 if let strongSelf = self {
@@ -70,15 +70,15 @@ class CompoundNetworkCallDemoViewController: BaseDemoViewController {
                 }
                 return Promise.all(promises)
         } ).then(
-            { [weak self] (value) -> AnyObject? in
+            { [weak self] value in
                 return self?.loadURL3StepPromise()
         }).then(
-            { [weak self] (value) -> AnyObject? in
+            { [weak self] value in
                 self?.log("final success")
                 self?.finalStatusImageView!.setStatus(true)
                 self?.stopActivityIndicator()
                 return value
-            }, reject: { [weak self] (error) -> AnyObject? in
+            }, reject: { [weak self] error in
                 self?.log("final error: \(error.localizedDescription)")
                 self?.finalStatusImageView!.setStatus(false)
                 self?.stopActivityIndicator()
@@ -87,31 +87,31 @@ class CompoundNetworkCallDemoViewController: BaseDemoViewController {
 
     }
 
-    func loadURL1StepPromise() -> Promise {
+    func loadURL1StepPromise() -> Promise<AnyObject> {
         return loadURLStepPromise(url1TextField!.text, statusImageView:url1StatusImageView!, delay:0.0)
     }
 
-    func loadURL2aStepPromise() -> Promise {
+    func loadURL2aStepPromise() -> Promise<AnyObject> {
         return loadURLStepPromise(url2aTextField!.text, statusImageView:url2aStatusImageView!, delay:delay2aStepper!.value)
     }
 
-    func loadURL2bStepPromise() -> Promise {
+    func loadURL2bStepPromise() -> Promise<AnyObject> {
         return loadURLStepPromise(url2bTextField!.text, statusImageView:url2bStatusImageView!, delay:delay2bStepper!.value)
     }
 
-    func loadURL3StepPromise() -> Promise {
+    func loadURL3StepPromise() -> Promise<AnyObject> {
         return loadURLStepPromise(url3TextField!.text, statusImageView:url3StatusImageView!, delay:0.0)
     }
 
-    func loadURLStepPromise(urlString:String?, statusImageView:UIImageView?, delay:NSTimeInterval) -> Promise {
+    func loadURLStepPromise(urlString:String?, statusImageView:UIImageView?, delay:NSTimeInterval) -> Promise<AnyObject> {
         let url:NSURL? = (urlString == nil) ? nil : NSURL(string:urlString!)
         return loadURLPromise(url, delay:delay).then(
-            { [weak self] (value) -> AnyObject? in
+            { [weak self] value in
                 statusImageView?.setStatus(true)
                 let data:NSData? = value as? NSData
                 self?.log("loaded \(data?.length) bytes from URL \(url)")
                 return value
-            }, reject: { [weak self] (error) -> AnyObject? in
+            }, reject: { [weak self] error in
                 statusImageView?.setStatus(false)
                 var stopOnError = true
                 if let stopOnErrorSwitch = self?.stopOnErrorSwitch {

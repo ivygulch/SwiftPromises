@@ -35,7 +35,7 @@ class TimeoutNetworkCallDemoViewController: BaseDemoViewController {
         timeoutLabel!.text =  "Timeout: \(timeoutStepper!.value)"
     }
 
-    func startTimer(promise:Promise) {
+    func startTimer(promise:Promise<AnyObject>) {
         timeoutTimer = NSTimer.scheduledTimerWithTimeInterval(timeoutStepper!.value, target:self, selector:"handleTimeoutTimer:", userInfo:promise, repeats:false)
     }
 
@@ -45,7 +45,7 @@ class TimeoutNetworkCallDemoViewController: BaseDemoViewController {
     }
 
     func handleTimeoutTimer(timer:NSTimer) {
-        let promise = timer.userInfo as! Promise
+        let promise = timer.userInfo as! Promise<AnyObject>
         promise.reject(NSError(domain:"Timeout before completion", code:-1, userInfo:nil))
     }
 
@@ -59,18 +59,18 @@ class TimeoutNetworkCallDemoViewController: BaseDemoViewController {
             startTimer(urlPromise)
 
             urlPromise.then(
-                { [weak self] (value) -> AnyObject? in
+                { [weak self] value in
                     self?.log("final success")
                     self?.finalStatusImageView!.setStatus(true)
                     self?.stopActivityIndicator()
                     self?.stopTimer()
-                    return value
-                }, reject: { [weak self] (error) -> AnyObject? in
-                    self?.log("final error: \(error.localizedDescription)")
+                    return .Value(value)
+                }, reject: { [weak self] error in
+                    self?.log("final error: \(error)")
                     self?.finalStatusImageView!.setStatus(false)
                     self?.stopActivityIndicator()
                     self?.stopTimer()
-                    return error
+                    return .Error(error)
                 }
             )
         }
