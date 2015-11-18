@@ -353,19 +353,19 @@ class PromiseTests: XCTestCase {
     }
 
     // MARK: - Promise.all tests
-/*
+
     func testAllFulfilledAfterCallToAll() {
         let timeout:NSTimeInterval = 5.0
         let expectation = expectationWithDescription("expectation")
 
-        var expectedPromises:[Promise] = []
+        var expectedPromises:[Promise<AnyObject>] = []
         for _ in 0..<5 {
             expectedPromises.append(Promise())
         }
         let promiseAll = Promise.all(expectedPromises)
         promiseAll.then(
             { value in
-                if let actualPromises = value as? [Promise] {
+                if let actualPromises = value {
                     XCTAssertEqual(expectedPromises.count, actualPromises.count)
                     for index in 0..<actualPromises.count {
                         let actualPromise = actualPromises[index]
@@ -375,11 +375,11 @@ class PromiseTests: XCTestCase {
                     XCTFail("should return list of fulfilled promises")
                 }
                 expectation.fulfill()
-                return value
+                return .Value(value)
             }, reject: { error in
                 XCTFail("should not fail")
                 expectation.fulfill()
-                return error
+                return .Error(error)
         })
 
         for index in 0..<expectedPromises.count {
@@ -394,28 +394,28 @@ class PromiseTests: XCTestCase {
         let timeout:NSTimeInterval = 5.0
         let expectation = expectationWithDescription("expectation")
 
-        var expectedPromises:[Promise] = []
+        var expectedPromises:[Promise<String>] = []
         for index in 0..<5 {
             expectedPromises.append(Promise("test\(index)"))
         }
         let promiseAll = Promise.all(expectedPromises)
         promiseAll.then(
             { value in
-                if let actualPromises = value as? [Promise] {
+                if let actualPromises = value {
                     XCTAssertEqual(expectedPromises.count, actualPromises.count)
                     for index in 0..<actualPromises.count {
                         let actualPromise = actualPromises[index]
-                        XCTAssertEqual("test\(index)", actualPromise.value as? String)
+                        XCTAssertEqual("test\(index)", actualPromise.value)
                     }
                 } else {
                     XCTFail("should return list of fulfilled promises")
                 }
                 expectation.fulfill()
-                return value
+                return .Value(value)
             }, reject: { error in
                 XCTFail("should not fail")
                 expectation.fulfill()
-                return error
+                return .Error(error)
         })
 
         waitForExpectationsWithTimeout(timeout, handler: nil)
@@ -425,7 +425,7 @@ class PromiseTests: XCTestCase {
         let timeout:NSTimeInterval = 5.0
         let expectation = expectationWithDescription("expectation")
 
-        var expectedPromises:[Promise] = []
+        var expectedPromises:[Promise<AnyObject>] = []
         let indexToReject=1
         for _ in 0..<5 {
             expectedPromises.append(Promise())
@@ -436,11 +436,11 @@ class PromiseTests: XCTestCase {
             { value in
                 XCTFail("should have failed")
                 expectation.fulfill()
-                return value
+                return .Value(value)
             }, reject: { error in
-                XCTAssertEqual("error\(indexToReject)", error.domain)
+                XCTAssertEqual("error\(indexToReject)", (error as NSError).domain)
                 expectation.fulfill()
-                return error
+                return .Error(error)
         })
 
         for index in 0..<expectedPromises.count {
@@ -459,7 +459,7 @@ class PromiseTests: XCTestCase {
         let timeout:NSTimeInterval = 5.0
         let expectation = expectationWithDescription("expectation")
 
-        var expectedPromises:[Promise] = []
+        var expectedPromises:[Promise<AnyObject>] = []
         let indexToReject=1
         for index in 0..<5 {
             if (index == indexToReject) {
@@ -474,14 +474,14 @@ class PromiseTests: XCTestCase {
             { value in
                 XCTFail("should have failed")
                 expectation.fulfill()
-                return value
+                return .Value(value)
             }, reject: { error in
-                XCTAssertEqual("error\(indexToReject)", error.domain)
+                XCTAssertEqual("error\(indexToReject)", (error as NSError).domain)
                 expectation.fulfill()
-                return error
+                return .Error(error)
         })
         
         waitForExpectationsWithTimeout(timeout, handler: nil)
     }
-*/
+
 }

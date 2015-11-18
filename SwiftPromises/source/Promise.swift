@@ -41,32 +41,32 @@ public class Promise<T> : NSObject {
         return Promise(value)
     }
 
-// TODO: finish 'all' function
-//    public class func all(promises:[Promise<T>]) -> Promise<[Promise<T>]> {
-//        let result:Promise<T> = Promise()
-//        var completedPromiseCount = 0
-//        let synchronizer = Synchronizer()
-//
-//        for promise in promises {
-//            promise.then(
-//                {
-//                    value in
-//                    synchronizer.synchronize({
-//                        completedPromiseCount += 1
-//                    })
-//                    if (completedPromiseCount == promises.count) {
-//                        result.fulfill(promises)
-//                    }
-//                    return value
-//                }, reject: { (error) -> ErrorType in
-//                    result.reject(error)
-//                    return error
-//                }
-//            )
-//        }
-//
-//        return result
-//    }
+    public class func all(promises:[Promise<T>]) -> Promise<[Promise<T>]> {
+        let result:Promise<[Promise<T>]> = Promise<[Promise<T>]>()
+        var completedPromiseCount = 0
+        let synchronizer = Synchronizer()
+
+        for promise in promises {
+            promise.then(
+                {
+                    value in
+                    synchronizer.synchronize({
+                        completedPromiseCount += 1
+                    })
+                    if (completedPromiseCount == promises.count) {
+                        result.fulfill(promises)
+                    }
+                    return .Value(value)
+                }, reject: {
+                    error in
+                    result.reject(error)
+                    return .Error(error)
+                }
+            )
+        }
+
+        return result
+    }
 
     /**
     * Initializes a new pending promise
