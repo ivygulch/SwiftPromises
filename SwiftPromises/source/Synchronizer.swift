@@ -8,13 +8,8 @@
 
 import Foundation
 
-@objc public class Synchronizer : NSObject {
+public class Synchronizer : NSObject {
     private let queue:dispatch_queue_t
-
-    // needed for objc usage since we do not inherit from NSObject
-    public class func newInstance() -> Promise {
-        return Promise()
-    }
 
     public override init() {
         let uuid = NSUUID().UUIDString

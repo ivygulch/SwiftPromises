@@ -32,14 +32,9 @@ private enum PromiseState {
 *  - Become rejected with an error" (https://gist.github.com/domenic/3889970)
 *
 */
-@objc public class Promise : NSObject {
+public class Promise : NSObject {
 
     // MARK: - Interface
-
-    // needed for objc usage since we do not inherit from NSObject
-    public class func newInstance() -> Promise {
-        return Promise()
-    }
 
     public class func valueAsPromise(value: AnyObject?) -> Promise {
         if let result = value as? Promise {
