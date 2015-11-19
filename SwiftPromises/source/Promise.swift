@@ -31,9 +31,12 @@ public class Promise<T> : NSObject {
     // MARK: - Interface
 
     /**
+    This initializer needs to check for Promise<T> or ErrorType values to handle the
+    case where T is AnyObject and those then become valid argument values.
+
     - Returns: an immutable, fulfilled promise using the supplied value
     */
-    public class func valueAsPromise(value: T?) -> Promise<T> {
+    public static func valueAsPromise(value: T?) -> Promise<T> {
         print("DBG: value=\(value.dynamicType)/\(value)")
         if let existingPromise = value as? Promise<T> {
             return existingPromise
@@ -45,9 +48,51 @@ public class Promise<T> : NSObject {
     }
 
     /**
+     This initializer checks for Promise values that are not type T, it requires
+     special handling but since Swift cannot current require to be a assignment
+     compatible with T, the only choice is to reject the promise if an incompatible
+     value is returned from the original promise.
+
+     This initializer is necessary because T is AnyObject, then Promise<R> where R is not T,
+     will be passed through as a normal value in the other initializer.  This specialized
+     initializer forces it through this path.
+
+     - Returns: convenience method wrapping a promise of a different subtype than T
+     */
+    public static func valueAsPromise<R>(existingPromise: Promise<R>) -> Promise<T> {
+        let result:Promise<T> = Promise()
+        existingPromise.then(
+            {
+                value in
+                if let t = value as? T {
+                    result.fulfill(t)
+                } else {
+                    let errorMessage = "original promise was fulfilled with \(value), but it could not be converted to \(T.self) so fulfilling dependent promise with nil"
+                    let error = PromiseError.MismatchPromiseValueTypes(errorMessage)
+                    result.reject(error)
+                }
+                return .Value(value)
+            },
+            reject:
+            {
+                error in
+                result.reject(error)
+                return .Error(error)
+            }
+        )
+        return result
+    }
+
+    /**
+     This initializer frees the client code from needing to check if the value being
+     passed in is a promise already or not.
+
+     This version is necessary for those cases where T is NOT AnyObject, so the
+     first initializer would not be used by the compiler.
+
      - Returns: an immutable, fulfilled promise using an existing promise
      */
-    public class func valueAsPromise(value: Promise<T>) -> Promise<T> {
+    public static func valueAsPromise(value: Promise<T>) -> Promise<T> {
         return value
     }
 
@@ -315,13 +360,23 @@ public class Promise<T> : NSObject {
 }
 
 // MARK: -
+
+// MARK: Public error types
+
+/**
+Custom errors generated from within the SwiftPromise framework
+*/
+public enum PromiseError: ErrorType {
+    case MismatchPromiseValueTypes(String)
+}
+
 // MARK: Public helper enum PromiseClosureResult
 
 /**
-PromiseClosureResult is returned by promise fulfill and reject closures so they can return 
-a type-safe value, an error, or a promise to be used in the promise chain.  This allows 
-either type of closure to pass along a similar value (e.g. type-safe value -> type-safe value) 
-or redirect the dependent, chained promises into an alternative path by returning a type-safe 
+PromiseClosureResult is returned by promise fulfill and reject closures so they can return
+a type-safe value, an error, or a promise to be used in the promise chain.  This allows
+either type of closure to pass along a similar value (e.g. type-safe value -> type-safe value)
+or redirect the dependent, chained promises into an alternative path by returning a type-safe
 value from a reject closure.
 
 <ul>

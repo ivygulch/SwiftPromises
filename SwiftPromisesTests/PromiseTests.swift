@@ -413,8 +413,8 @@ class PromiseTests: XCTestCase {
         XCTAssertTrue(promise.isFulfilled)
         XCTAssertFalse(promise.isRejected)
     }
-    
-    func testAnyObjectValueAsPromiseWithDifferentTypePromise() {
+
+    func testAnyObjectValueAsPromiseWithCompatibleDifferentTypePromise() {
         let value = 12345
         let existingPromise:Promise<Int> = Promise()
         existingPromise.fulfill(value)
@@ -425,7 +425,19 @@ class PromiseTests: XCTestCase {
         XCTAssertTrue(promise.isFulfilled)
         XCTAssertFalse(promise.isRejected)
     }
-    
+
+    func testAnyObjectValueAsPromiseWithIncompatibleDifferentTypePromise() {
+        let value = 12345
+        let existingPromise:Promise<Int> = Promise()
+        existingPromise.fulfill(value)
+
+        let promise:Promise<String> = Promise.valueAsPromise(existingPromise)
+        XCTAssertTrue(promise.error is PromiseError)
+        XCTAssertFalse(promise.isPending)
+        XCTAssertFalse(promise.isFulfilled)
+        XCTAssertTrue(promise.isRejected)
+    }
+
     // MARK: - Promise.all tests
 
     func testAllFulfilledAfterCallToAll() {
@@ -557,5 +569,5 @@ class PromiseTests: XCTestCase {
         
         waitForExpectationsWithTimeout(timeout, handler: nil)
     }
-
+    
 }
