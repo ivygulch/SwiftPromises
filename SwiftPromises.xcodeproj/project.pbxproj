@@ -50,6 +50,8 @@
 		F851106F1AA3DD170084234A /* ChainedNetworkCallDemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainedNetworkCallDemoViewController.swift; sourceTree = "<group>"; };
 		F85110711AA3E7C60084234A /* TimeoutNetworkCallDemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeoutNetworkCallDemoViewController.swift; sourceTree = "<group>"; };
 		F85110731AA49ACF0084234A /* CompoundNetworkCallDemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompoundNetworkCallDemoViewController.swift; sourceTree = "<group>"; };
+		F88E9EE61BFD367B0059A970 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		F88E9EE71BFD3A300059A970 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		F89674D91A9E58B700FA3AED /* SwiftPromisesDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftPromisesDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F89674DD1A9E58B700FA3AED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F89674DE1A9E58B700FA3AED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -135,6 +137,8 @@
 		F89674D01A9E58B700FA3AED = {
 			isa = PBXGroup;
 			children = (
+				F88E9EE71BFD3A300059A970 /* LICENSE */,
+				F88E9EE61BFD367B0059A970 /* README.md */,
 				20CC323B1ACDF80F00231894 /* SwiftPromises */,
 				20CC324A1ACDF80F00231894 /* SwiftPromisesTests */,
 				F89674DB1A9E58B700FA3AED /* SwiftPromisesDemo */,
