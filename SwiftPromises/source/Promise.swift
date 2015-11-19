@@ -34,7 +34,11 @@ public class Promise<T> : NSObject {
     - Returns: an immutable, fulfilled promise using the supplied value
     */
     public class func valueAsPromise(value: T?) -> Promise<T> {
-        return Promise(value)
+        if let existingPromise = value as? Promise<T> {
+            return existingPromise
+        } else {
+            return Promise(value)
+        }
     }
 
     /**
