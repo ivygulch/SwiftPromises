@@ -108,5 +108,34 @@ class SimpleNetworkCallDemoViewController: BaseDemoViewController {
         }
         return result
     }
-    
+
+
+    func loadStringFromURL(url:NSURL) {
+        let loadURLPromise:Promise<NSData> = Promise()
+
+        let session = NSURLSession.sharedSession().dataTaskWithURL(url,
+            completionHandler : {(data, response, error) -> Void in
+                if let error = error {
+                    loadURLPromise.reject(error)
+                } else {
+                    loadURLPromise.fulfill(data)
+                }
+        })
+        session.resume()
+
+        loadURLPromise.then(
+            {
+                data in
+                // do something with data then pass the value down the chain,
+                // or alternatively redirect the chain by returning a .Error or .Pending result
+                return .Value(data)
+            },
+            reject:
+            {
+                error in
+                // do something with error then pass the error down the chain, 
+                // or alternatively redirect the chain by returning a .Value or .Pending result
+                return .Error(error)
+        })
+
 }
