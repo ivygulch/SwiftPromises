@@ -47,7 +47,7 @@ loadURLPromise.then(
 
 ## Contributors
 
-Initial version developed for WalmartLabs by Doug Sjoquist, Andy Finnel, Steve Riggins. 
+Initial version developed for WalmartLabs by Doug Sjoquist, Andy Finnell, Steve Riggins. 
 
 ## License
 
