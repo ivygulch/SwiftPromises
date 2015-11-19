@@ -13,7 +13,7 @@
     <a title="Promise Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> Docs</a> (100% documented)</p>
+        <p><a href="../index.html"> Docs</a> (96% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -42,6 +42,9 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Enums/PromiseClosureResult.html">PromiseClosureResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/PromiseError.html">PromiseError</a>
               </li>
             </ul>
           </li>
@@ -97,7 +100,10 @@ should return a promise, which can do one of two things:</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <div class="aside aside-returns">
+                        <p>This initializer needs to check for <a href="../Classes/Promise.html">Promise</a><T> or ErrorType values to handle the
+case where T is AnyObject and those then become valid argument values.</p>
+
+<div class="aside aside-returns">
           <p class="aside-title">Returns</p>
           an immutable, fulfilled promise using the supplied value
 
@@ -108,13 +114,100 @@ should return a promise, which can do one of two things:</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">valueAsPromise</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="kt">T</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Promise</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">valueAsPromise</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="kt">T</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Promise</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
                       <div>
                         <h4>Return Value</h4>
                         <p>an immutable, fulfilled promise using the supplied value</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZFC13SwiftPromises7Promise14valueAsPromiseu__rFMGS0_q__FGS0_qd___GS0_q__"></a>
+                    <a name="//apple_ref/swift/Method/valueAsPromise(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZFC13SwiftPromises7Promise14valueAsPromiseu__rFMGS0_q__FGS0_qd___GS0_q__">valueAsPromise(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This initializer checks for <a href="../Classes/Promise.html">Promise</a> values that are not type T, it requires
+special handling but since Swift cannot current require to be a assignment
+compatible with T, the only choice is to reject the promise if an incompatible
+value is returned from the original promise.</p>
+
+<p>This initializer is necessary because T is AnyObject, then <a href="../Classes/Promise.html">Promise</a><R> where R is not T,
+will be passed through as a normal value in the other initializer.  This specialized
+initializer forces it through this path.</p>
+
+<div class="aside aside-returns">
+          <p class="aside-title">Returns</p>
+          convenience method wrapping a promise of a different subtype than T
+
+        </div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="n">valueAsPromise</span><span class="o">&lt;</span><span class="kt">R</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">existingPromise</span><span class="p">:</span> <span class="kt">Promise</span><span class="o">&lt;</span><span class="kt">R</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Promise</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>convenience method wrapping a promise of a different subtype than T</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZFC13SwiftPromises7Promise14valueAsPromiseurFMGS0_q__FGS0_q__GS0_q__"></a>
+                    <a name="//apple_ref/swift/Method/valueAsPromise(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZFC13SwiftPromises7Promise14valueAsPromiseurFMGS0_q__FGS0_q__GS0_q__">valueAsPromise(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This initializer frees the client code from needing to check if the value being
+passed in is a promise already or not.</p>
+
+<p>This version is necessary for those cases where T is NOT AnyObject, so the
+first initializer would not be used by the compiler.</p>
+
+<div class="aside aside-returns">
+          <p class="aside-title">Returns</p>
+          an immutable, fulfilled promise using an existing promise
+
+        </div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">valueAsPromise</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="kt">Promise</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Promise</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>an immutable, fulfilled promise using an existing promise</p>
 
                       </div>
                     </section>
@@ -159,9 +252,9 @@ should return a promise, which can do one of two things:</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:ZFC13SwiftPromises7Promise3allurFMGS0_q__FGSaGS0_P___GS0_GSaGS0_P____"></a>
+                    <a name="/s:ZFC13SwiftPromises7Promise3allurFMGS0_q__FGSaGS0_q___GS0_GSaGS0_q____"></a>
                     <a name="//apple_ref/swift/Method/all(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:ZFC13SwiftPromises7Promise3allurFMGS0_q__FGSaGS0_P___GS0_GSaGS0_P____">all(_:)</a>
+                    <a class="token" href="#/s:ZFC13SwiftPromises7Promise3allurFMGS0_q__FGSaGS0_q___GS0_GSaGS0_q____">all(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -185,7 +278,7 @@ are fulfilled or rejected when one or more are rejected</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">all</span><span class="p">(</span><span class="nv">promises</span><span class="p">:[</span><span class="kt">Promise</span><span class="o">&lt;</span><span class="kt">Any</span><span class="o">&gt;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kt">Promise</span><span class="o">&lt;</span><span class="p">[</span><span class="kt">Promise</span><span class="o">&lt;</span><span class="kt">Any</span><span class="o">&gt;</span><span class="p">]</span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">all</span><span class="p">(</span><span class="nv">promises</span><span class="p">:[</span><span class="kt">Promise</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kt">Promise</span><span class="o">&lt;</span><span class="p">[</span><span class="kt">Promise</span><span class="p">]</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -686,7 +779,7 @@ Since Objective-C does not recognize default parameters, this provides a work-ar
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2015 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2015-11-18)</p>
+          <p>&copy; 2015 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2015-11-19)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.4.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

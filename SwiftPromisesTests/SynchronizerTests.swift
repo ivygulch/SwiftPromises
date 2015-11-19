@@ -39,5 +39,5 @@ class SynchronizerTests: XCTestCase {
 
         waitForExpectationsWithTimeout(timeout, handler: nil)
     }
-
+    
 }

@@ -1,0 +1,2 @@
+Promise.swift
+	case MismatchPromiseValueTypes(String)

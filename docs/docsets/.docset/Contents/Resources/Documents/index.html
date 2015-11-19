@@ -12,7 +12,7 @@
     <a title="  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html"> Docs</a> (100% documented)</p>
+        <p><a href="index.html"> Docs</a> (96% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -42,6 +42,9 @@
               <li class="nav-group-task">
                 <a href="Enums/PromiseClosureResult.html">PromiseClosureResult</a>
               </li>
+              <li class="nav-group-task">
+                <a href="Enums/PromiseError.html">PromiseError</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -56,51 +59,53 @@
 <p>SwiftPromises is a lightweight implementation of the Promise pattern popularlized by various Javascript frameworks.</p>
 <a href='#code_example' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='code_example'>Code Example</h2>
 
-<p>Show what the library does as concisely as possible, developers should be able to figure out <strong>how</strong> your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.</p>
-<a href='#installation' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='installation'>Installation</h2>
+<p>A simple example that chains two types of promises together to retrieve data from a website 
+then create a string representation of the html.</p>
 
-<p>Provide code examples and explanations of how to get the project.</p>
+<pre><code>
+
+let loadURLPromise:Promise&lt;NSData&gt; = Promise()
+
+let session = NSURLSession.sharedSession().dataTaskWithURL(url,
+    completionHandler : {(data, response, error) -> Void in
+        if let error = error {
+            loadURLPromise.reject(error)
+        } else {
+            loadURLPromise.fulfill(data)
+        }
+    })
+session.resume()
+
+loadURLPromise.then(
+    {
+        data in
+        // do something with data then pass the value down the chain,
+        // or alternatively redirect the chain by returning a .Error or .Pending result
+        return .Value(data)
+    },
+    reject:
+    {
+        error in
+        // do something with error then pass the error down the chain, 
+        // or alternatively redirect the chain by returning a .Value or .Pending result
+        return .Error(error)
+    })
+
+</code></pre>
 <a href='#api_reference' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='api_reference'>API Reference</h2>
 
-<p>Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.</p>
+<p><a href="See%20API%20Documentation.">docs/index.html</a></p>
 <a href='#contributors' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='contributors'>Contributors</h2>
 
-<p>Let people know how they can dive into the project, include important links to things like issue trackers, irc, twitter accounts if applicable.</p>
+<p>Initial version developed for WalmartLabs by Doug Sjoquist, Andy Finnell, Steve Riggins. </p>
 <a href='#license' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='license'>License</h2>
 
-<p>A short snippet describing the license (MIT, Apache, etc.)</p>
-<a href='#project_name' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='project_name'>Project Name</h1>
-
-<p>TODO: Write a project description</p>
-<a href='#installation' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='installation'>Installation</h2>
-
-<p>TODO: Describe the installation process</p>
-<a href='#usage' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='usage'>Usage</h2>
-
-<p>TODO: Write usage instructions</p>
-<a href='#contributing' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='contributing'>Contributing</h2>
-
-<ol>
-<li>Fork it!</li>
-<li>Create your feature branch: <code>git checkout -b my-new-feature</code></li>
-<li>Commit your changes: <code>git commit -am &#39;Add some feature&#39;</code></li>
-<li>Push to the branch: <code>git push origin my-new-feature</code></li>
-<li>Submit a pull request :D</li>
-</ol>
-<a href='#history' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='history'>History</h2>
-
-<p>TODO: Write history</p>
-<a href='#credits' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='credits'>Credits</h2>
-
-<p>TODO: Write credits</p>
-<a href='#license' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='license'>License</h2>
-
-<p>TODO: Write license</p>
+<p><a href="MIT%20License">LICENSE</a></p>
 
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2015 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2015-11-18)</p>
+          <p>&copy; 2015 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2015-11-19)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.4.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
