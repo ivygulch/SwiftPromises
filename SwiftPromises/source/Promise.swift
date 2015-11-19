@@ -36,6 +36,8 @@ public class Promise<T> : NSObject {
     public class func valueAsPromise(value: T?) -> Promise<T> {
         if let existingPromise = value as? Promise<T> {
             return existingPromise
+        } else if let error = value as? ErrorType {
+            return Promise(error)
         } else {
             return Promise(value)
         }
