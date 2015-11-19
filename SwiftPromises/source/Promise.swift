@@ -37,7 +37,6 @@ public class Promise<T> : NSObject {
     - Returns: an immutable, fulfilled promise using the supplied value
     */
     public static func valueAsPromise(value: T?) -> Promise<T> {
-        print("DBG: value=\(value.dynamicType)/\(value)")
         if let existingPromise = value as? Promise<T> {
             return existingPromise
         } else if let error = value as? ErrorType {
