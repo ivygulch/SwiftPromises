@@ -352,6 +352,80 @@ class PromiseTests: XCTestCase {
         waitForExpectationsWithTimeout(timeout, handler: nil)
     }
 
+    // MARK: - valueAsPromise tests
+
+    func testTypeSafeValueAsPromiseWithValue() {
+        let value = "value"
+        let promise:Promise<String> = Promise.valueAsPromise(value)
+        XCTAssertEqual(value, promise.value)
+        XCTAssertFalse(promise.isPending)
+        XCTAssertTrue(promise.isFulfilled)
+        XCTAssertFalse(promise.isRejected)
+    }
+
+    func testTypeSafeValueAsPromiseWithError() {
+        let error = NSError(domain: "test", code: -1, userInfo: nil)
+        let promise:Promise<String> = Promise.valueAsPromise(error)
+        XCTAssertEqual(error, promise.error as? NSError)
+        XCTAssertFalse(promise.isPending)
+        XCTAssertFalse(promise.isFulfilled)
+        XCTAssertTrue(promise.isRejected)
+    }
+
+    func testTypeSafeValueAsPromiseWithSameTypePromise() {
+        let value = "value"
+        let existingPromise:Promise<String> = Promise()
+        existingPromise.fulfill(value)
+
+        let promise:Promise<String> = Promise.valueAsPromise(existingPromise)
+        XCTAssertEqual(value, promise.value)
+        XCTAssertFalse(promise.isPending)
+        XCTAssertTrue(promise.isFulfilled)
+        XCTAssertFalse(promise.isRejected)
+    }
+
+    func testAnyObjectValueAsPromiseWithValue() {
+        let value = "value"
+        let promise:Promise<AnyObject> = Promise.valueAsPromise(value)
+        XCTAssertEqual(value, promise.value as? String)
+        XCTAssertFalse(promise.isPending)
+        XCTAssertTrue(promise.isFulfilled)
+        XCTAssertFalse(promise.isRejected)
+    }
+
+    func testAnyObjectValueAsPromiseWithError() {
+        let error = NSError(domain: "test", code: -1, userInfo: nil)
+        let promise:Promise<AnyObject> = Promise.valueAsPromise(error)
+        XCTAssertEqual(error, promise.error as? NSError)
+        XCTAssertFalse(promise.isPending)
+        XCTAssertFalse(promise.isFulfilled)
+        XCTAssertTrue(promise.isRejected)
+    }
+
+    func testAnyObjectValueAsPromiseWithSameTypePromise() {
+        let value = "value"
+        let existingPromise:Promise<AnyObject> = Promise()
+        existingPromise.fulfill(value)
+
+        let promise:Promise<AnyObject> = Promise.valueAsPromise(existingPromise)
+        XCTAssertEqual(value, promise.value as? String)
+        XCTAssertFalse(promise.isPending)
+        XCTAssertTrue(promise.isFulfilled)
+        XCTAssertFalse(promise.isRejected)
+    }
+    
+    func testAnyObjectValueAsPromiseWithDifferentTypePromise() {
+        let value = 12345
+        let existingPromise:Promise<Int> = Promise()
+        existingPromise.fulfill(value)
+
+        let promise:Promise<AnyObject> = Promise.valueAsPromise(existingPromise)
+        XCTAssertEqual(value, promise.value as? Int)
+        XCTAssertFalse(promise.isPending)
+        XCTAssertTrue(promise.isFulfilled)
+        XCTAssertFalse(promise.isRejected)
+    }
+    
     // MARK: - Promise.all tests
 
     func testAllFulfilledAfterCallToAll() {
