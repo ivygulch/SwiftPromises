@@ -45,13 +45,13 @@ public class Promise<T> : NSObject {
     }
 
     /**
-     - Parameter promises: list of promises that act as dependencies
+     - Parameter promises: list of generic promises that act as dependencies
 
      - Returns: a dependent promise that is fulfilled when all the supplied promises
      are fulfilled or rejected when one or more are rejected
      */
-    public class func all(promises:[Promise<T>]) -> Promise<[Promise<T>]> {
-        let result:Promise<[Promise<T>]> = Promise<[Promise<T>]>()
+    public class func all(promises:[Promise]) -> Promise<[Promise]> {
+        let result:Promise<[Promise]> = Promise<[Promise]>()
         var completedPromiseCount = 0
         let synchronizer = Synchronizer()
 
