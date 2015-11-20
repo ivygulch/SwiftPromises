@@ -47,13 +47,13 @@ public class Promise<T> : NSObject {
     }
 
     /**
-     This initializer checks for Promise values that are not type T, it requires
-     special handling but since Swift cannot current require to be a assignment
+     This initializer checks for Promise values that are not type T which requires
+     special handling. Since Swift cannot currently require R to be assignment
      compatible with T, the only choice is to reject the promise if an incompatible
      value is returned from the original promise.
 
-     This initializer is necessary because T is Any, then Promise<R> where R is not T,
-     will be passed through as a normal value in the other initializer.  This specialized
+     This initializer is necessary because if T is Any, then Promise<R> where R is not T,
+     will be passed through as a normal value in the primary initializer.  This specialized
      initializer forces it through this path.
 
      - Returns: convenience method wrapping a promise of a different subtype than T
