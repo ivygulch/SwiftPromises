@@ -32,7 +32,7 @@ public class Promise<T> : NSObject {
 
     /**
     This initializer needs to check for Promise<T> or ErrorType values to handle the
-    case where T is AnyObject and those then become valid argument values.
+    case where T is Any and those then become valid argument values.
 
     - Returns: an immutable, fulfilled promise using the supplied value
     */
@@ -52,7 +52,7 @@ public class Promise<T> : NSObject {
      compatible with T, the only choice is to reject the promise if an incompatible
      value is returned from the original promise.
 
-     This initializer is necessary because T is AnyObject, then Promise<R> where R is not T,
+     This initializer is necessary because T is Any, then Promise<R> where R is not T,
      will be passed through as a normal value in the other initializer.  This specialized
      initializer forces it through this path.
 
@@ -86,7 +86,7 @@ public class Promise<T> : NSObject {
      This initializer frees the client code from needing to check if the value being
      passed in is a promise already or not.
 
-     This version is necessary for those cases where T is NOT AnyObject, so the
+     This version is necessary for those cases where T is NOT Any, so the
      first initializer would not be used by the compiler.
 
      - Returns: an immutable, fulfilled promise using an existing promise
