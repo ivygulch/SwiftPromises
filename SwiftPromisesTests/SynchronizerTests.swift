@@ -16,14 +16,14 @@ class SynchronizerTests: XCTestCase {
         var locked = false
         let numBlocks = 10
         let sleepSeconds = 1
-        let timeout:NSTimeInterval = Double(numBlocks * sleepSeconds * 2)
+        let timeout:TimeInterval = Double(numBlocks * sleepSeconds * 2)
 
         let synchronizer = Synchronizer()
 
         for count in 1...numBlocks {
-            let expectation = expectationWithDescription("expectation\(count)")
+            let expectation = self.expectation(description: "expectation\(count)")
             print("before dispatch \(count)")
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            DispatchQueue.global(qos: .default).async {
                 synchronizer.synchronize {
                     print("begin block \(count)")
                     XCTAssertFalse(locked, "should start with locked=false")
@@ -33,11 +33,11 @@ class SynchronizerTests: XCTestCase {
                     expectation.fulfill()
                     print("end block \(count)")
                 }
-            })
+            }
             print("after dispatch \(count)")
         }
 
-        waitForExpectationsWithTimeout(timeout, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
 }

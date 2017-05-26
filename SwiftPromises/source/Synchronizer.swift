@@ -30,36 +30,36 @@ func functionBToBeSynchronized() {
 }
 ```
 */
-public class Synchronizer : NSObject {
-    private let queue:dispatch_queue_t
+open class Synchronizer : NSObject {
+    private let queue:DispatchQueue
 
     /**
      Creates a new synchronizer that uses a newly created, custom queue with a random name
      */
     public override init() {
-        let uuid = NSUUID().UUIDString
-        self.queue = dispatch_queue_create("Sync.\(uuid)",nil)
+        let uuid = UUID().uuidString
+        self.queue = DispatchQueue(label: "Sync.\(uuid)",attributes: [])
     }
 
     /**
      Creates a new synchronizer that uses a newly created, custom queue with a given name
      */
     public init(queueName:String) {
-        self.queue = dispatch_queue_create(queueName,nil)
+        self.queue = DispatchQueue(label: queueName,attributes: [])
     }
 
     /**
      Creates a new synchronizer that uses an existing dispatch queue
      */
-    public init(queue:dispatch_queue_t) {
+    public init(queue:DispatchQueue) {
         self.queue = queue
     }
 
     /**
      - Parameter closure: the closure to be synchronized
      */
-    public func synchronize(closure:()->Void) {
-        dispatch_sync(queue, {
+    public func synchronize(_ closure:()->Void) {
+        queue.sync(execute: {
             closure()
         })
     }

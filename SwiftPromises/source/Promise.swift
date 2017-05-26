@@ -26,7 +26,7 @@ should return a promise, which can do one of two things:
 *  Become rejected with an error" (https://gist.github.com/domenic/3889970)
 
 */
-public class Promise<T> : NSObject {
+open class Promise<T> : NSObject {
 
     // MARK: - Interface
 
@@ -36,10 +36,10 @@ public class Promise<T> : NSObject {
 
     - Returns: an immutable, fulfilled promise using the supplied value
     */
-    public static func valueAsPromise(value: T?) -> Promise<T> {
+    public static func valueAsPromise(_ value: T?) -> Promise<T> {
         if let existingPromise = value as? Promise<T> {
             return existingPromise
-        } else if let error = value as? ErrorType {
+        } else if let error = value as? Error {
             return Promise(error)
         } else {
             return Promise(value)
@@ -58,7 +58,7 @@ public class Promise<T> : NSObject {
 
      - Returns: convenience method wrapping a promise of a different subtype than T
      */
-    public static func valueAsPromise<R>(existingPromise: Promise<R>) -> Promise<T> {
+    public static func valueAsPromise<R>(_ existingPromise: Promise<R>) -> Promise<T> {
         let result:Promise<T> = Promise()
         existingPromise.then(
             {
@@ -67,16 +67,16 @@ public class Promise<T> : NSObject {
                     result.fulfill(t)
                 } else {
                     let errorMessage = "original promise was fulfilled with \(value), but it could not be converted to \(T.self) so fulfilling dependent promise with nil"
-                    let error = PromiseError.MismatchPromiseValueTypes(errorMessage)
+                    let error = PromiseError.mismatchPromiseValueTypes(errorMessage)
                     result.reject(error)
                 }
-                return .Value(value)
+                return .value(value)
             },
             reject:
             {
                 error in
                 result.reject(error)
-                return .Error(error)
+                return .error(error)
             }
         )
         return result
@@ -91,14 +91,14 @@ public class Promise<T> : NSObject {
 
      - Returns: an immutable, fulfilled promise using an existing promise
      */
-    public static func valueAsPromise(value: Promise<T>) -> Promise<T> {
+    public static func valueAsPromise(_ value: Promise<T>) -> Promise<T> {
         return value
     }
 
     /**
      - Returns: an immutable, rejected promise using the supplied error
      */
-    public class func valueAsPromise(value: ErrorType) -> Promise<T> {
+    public class func valueAsPromise(_ value: Error) -> Promise<T> {
         return Promise(value)
     }
 
@@ -108,7 +108,7 @@ public class Promise<T> : NSObject {
      - Returns: a dependent promise that is fulfilled when all the supplied promises
      are fulfilled or rejected when one or more are rejected
      */
-    public class func all(promises:[Promise]) -> Promise<[Promise]> {
+    public class func all(_ promises:[Promise]) -> Promise<[Promise]> {
         let result:Promise<[Promise]> = Promise<[Promise]>()
         var completedPromiseCount = 0
         let synchronizer = Synchronizer()
@@ -123,11 +123,11 @@ public class Promise<T> : NSObject {
                     if (completedPromiseCount == promises.count) {
                         result.fulfill(promises)
                     }
-                    return .Value(value)
+                    return .value(value)
                 }, reject: {
                     error in
                     result.reject(error)
-                    return .Error(error)
+                    return .error(error)
                 }
             )
         }
@@ -139,7 +139,7 @@ public class Promise<T> : NSObject {
      Creates a new pending promise with no chained promises
      */
     public override init() {
-        state = .Pending([])
+        state = .pending([])
     }
 
     /**
@@ -149,7 +149,7 @@ public class Promise<T> : NSObject {
      has the result (such as with a completed network request, database query, etc.)
      */
     public init(_ value:T?) {
-        state = .Fulfilled(value)
+        state = .fulfilled(value)
     }
 
     /**
@@ -158,8 +158,8 @@ public class Promise<T> : NSObject {
      This can be useful when an async user code process needs to return a promise, but already
      has an error result (such as with a completed network request, database query, etc.)
      */
-    public init(_ error:ErrorType) {
-        state = .Rejected(error)
+    public init(_ error:Error) {
+        state = .rejected(error)
     }
 
     /**
@@ -170,7 +170,7 @@ public class Promise<T> : NSObject {
             var result = false
             stateSynchronizer.synchronize {
                 switch (self.state) {
-                case .Pending( _):
+                case .pending( _):
                     result = true
                 default:
                     result = false
@@ -188,7 +188,7 @@ public class Promise<T> : NSObject {
             var result = false
             stateSynchronizer.synchronize {
                 switch (self.state) {
-                case .Fulfilled( _):
+                case .fulfilled( _):
                     result = true
                 default:
                     result = false
@@ -206,7 +206,7 @@ public class Promise<T> : NSObject {
             var result = false
             stateSynchronizer.synchronize {
                 switch (self.state) {
-                case .Rejected( _):
+                case .rejected( _):
                     result = true
                 default:
                     result = false
@@ -223,7 +223,7 @@ public class Promise<T> : NSObject {
         var result:T?
         stateSynchronizer.synchronize {
             switch (self.state) {
-            case .Fulfilled(let value):
+            case .fulfilled(let value):
                 result = value
             default:
                 result = nil
@@ -235,11 +235,11 @@ public class Promise<T> : NSObject {
     /**
      Read-only property that is the rejection error if the promise has been rejected, nil otherwise
      */
-    public var error: ErrorType? {
-        var result:ErrorType?
+    public var error: Error? {
+        var result:Error?
         stateSynchronizer.synchronize {
             switch (self.state) {
-            case .Rejected(let error):
+            case .rejected(let error):
                 result = error
             default:
                 result = nil
@@ -255,12 +255,12 @@ public class Promise<T> : NSObject {
 
      - Parameter value: optional fulfilled value to use for the promise
      */
-    public func fulfill(value: T?) {
+    public func fulfill(_ value: T?) {
         var promiseActionsToFulfill:[PromiseAction<T>] = []
         stateSynchronizer.synchronize {
             switch (self.state) {
-            case .Pending(let promiseActions):
-                self.state = .Fulfilled(value)
+            case .pending(let promiseActions):
+                self.state = .fulfilled(value)
                 promiseActionsToFulfill = promiseActions
             default:
                 print("WARN: cannot fulfill promise, state already set to \(self.state)")
@@ -278,12 +278,12 @@ public class Promise<T> : NSObject {
 
      - Parameter error: rejection error to use for the promise
      */
-    public func reject(error: ErrorType) {
+    public func reject(_ error: Error) {
         var promiseActionsToReject:[PromiseAction<T>] = []
         stateSynchronizer.synchronize {
             switch (self.state) {
-            case .Pending(let promiseActions):
-                self.state = .Rejected(error)
+            case .pending(let promiseActions):
+                self.state = .rejected(error)
                 promiseActionsToReject = promiseActions
             default:
                 print("WARN: cannot reject promise, state already set to \(self.state)")
@@ -326,17 +326,17 @@ public class Promise<T> : NSObject {
 
      - Returns: a new instance of a promise to which application code can add dependent promises (e.g. chaining)
      */
-    public func then(fulfill: ((T?) -> PromiseClosureResult<T>), reject: ((ErrorType) -> PromiseClosureResult<T>)?) -> Promise<T> {
+    @discardableResult public func then(_ fulfill: @escaping ((T?) -> PromiseClosureResult<T>), reject: ((Error) -> PromiseClosureResult<T>)?) -> Promise<T> {
         let result:Promise<T> = Promise()
         let promiseAction = PromiseAction(result, fulfill, reject)
         stateSynchronizer.synchronize {
             switch (self.state) {
-            case .Pending(var promiseActions):
+            case .pending(var promiseActions):
                 promiseActions.append(promiseAction)
-                self.state = .Pending(promiseActions)
-            case .Fulfilled(let value):
+                self.state = .pending(promiseActions)
+            case .fulfilled(let value):
                 promiseAction.fulfill(value)
-            case .Rejected(let error):
+            case .rejected(let error):
                 promiseAction.reject(error)
             }
         }
@@ -347,13 +347,13 @@ public class Promise<T> : NSObject {
      A convenience method with a nil reject closure.
      Since Objective-C does not recognize default parameters, this provides a work-around.
      */
-    public func then(fulfill: ((T?) -> PromiseClosureResult<T>)) -> Promise<T> {
+    public func then(_ fulfill: @escaping ((T?) -> PromiseClosureResult<T>)) -> Promise<T> {
         return then(fulfill, reject: nil)
     }
 
     // MARK: - private values
 
-    private var state: PromiseState<T> = .Pending([])
+    private var state: PromiseState<T> = .pending([])
     private let stateSynchronizer = Synchronizer()
 
 }
@@ -365,8 +365,8 @@ public class Promise<T> : NSObject {
 /**
 Custom errors generated from within the SwiftPromise framework
 */
-public enum PromiseError: ErrorType {
-    case MismatchPromiseValueTypes(String)
+public enum PromiseError: Error {
+    case mismatchPromiseValueTypes(String)
 }
 
 // MARK: Public helper enum PromiseClosureResult
@@ -389,26 +389,26 @@ public enum PromiseClosureResult<T> {
      Associated value is required and is the error that will trigger
      the reject closure for a promise
      */
-    case Error(ErrorType)
+    case error(Error)
     /**
      Associated value is optional and is the type-safe result that will trigger
      the fulfill closure for a promise
      */
-    case Value(T?)
+    case value(T?)
     /**
      Associated value is required and is a type-safe promise that the owning promise will be dependent
      on for a result before the owning promise can be fulfilled or rejected
      */
-    case Pending(Promise<T>)
+    case pending(Promise<T>)
 }
 
 // MARK: -
 // MARK: Private helper enum PromiseState
 
 private enum PromiseState<T> {
-    case Pending([PromiseAction<T>])
-    case Fulfilled(T?)
-    case Rejected(ErrorType)
+    case pending([PromiseAction<T>])
+    case fulfilled(T?)
+    case rejected(Error)
 }
 
 // MARK: Private helper class PromiseAction
@@ -416,46 +416,46 @@ private enum PromiseState<T> {
 private class PromiseAction<T> {
     private let promise: Promise<T>
     private let fulfillClosure: ((T?) -> PromiseClosureResult<T>)
-    private let rejectClosure: ((ErrorType) -> PromiseClosureResult<T>)?
+    private let rejectClosure: ((Error) -> PromiseClosureResult<T>)?
 
-    init(_ promise: Promise<T>, _ fulfillClosure: ((T?) -> PromiseClosureResult<T>), _ rejectClosure: ((ErrorType) -> PromiseClosureResult<T>)?) {
+    init(_ promise: Promise<T>, _ fulfillClosure: @escaping ((T?) -> PromiseClosureResult<T>), _ rejectClosure: ((Error) -> PromiseClosureResult<T>)?) {
         self.promise = promise
         self.fulfillClosure = fulfillClosure
         self.rejectClosure = rejectClosure
     }
 
 
-    func fulfill(value: T?) {
+    func fulfill(_ value: T?) {
         let result = fulfillClosure(value)
         processClosureResult(result)
     }
 
-    func reject(error: ErrorType) {
-        var rejectResult:PromiseClosureResult<T> = .Error(error)
+    func reject(_ error: Error) {
+        var rejectResult:PromiseClosureResult<T> = .error(error)
         if let rejectClosure = rejectClosure {
             rejectResult = rejectClosure(error)
         }
         processClosureResult(rejectResult)
     }
 
-    func processClosureResult(promiseClosureResult: PromiseClosureResult<T>) {
+    func processClosureResult(_ promiseClosureResult: PromiseClosureResult<T>) {
         switch promiseClosureResult {
-        case .Error(let error):
+        case .error(let error):
             self.promise.reject(error)
-        case .Value(let value):
+        case .value(let value):
             self.promise.fulfill(value)
-        case .Pending(let pendingPromise):
+        case .pending(let pendingPromise):
             pendingPromise.then(
                 {
                     result in
                     self.promise.fulfill(result)
-                    return .Value(result)
+                    return .value(result)
                 },
                 reject:
                 {
                     error in
                     self.promise.reject(error)
-                    return .Error(error)
+                    return .error(error)
                 }
             )
         }
