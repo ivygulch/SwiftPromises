@@ -66,7 +66,7 @@ open class Promise<T> : NSObject {
                 if let t = value as? T {
                     result.fulfill(t)
                 } else {
-                    let errorMessage = "original promise was fulfilled with \(value), but it could not be converted to \(T.self) so fulfilling dependent promise with nil"
+                    let errorMessage = "original promise was fulfilled with \(String(describing: value)), but it could not be converted to \(T.self) so fulfilling dependent promise with nil"
                     let error = PromiseError.mismatchPromiseValueTypes(errorMessage)
                     result.reject(error)
                 }

@@ -88,7 +88,7 @@ class PromiseTests: XCTestCase {
         promise.then(
             { value in
                 expectation.fulfill()
-                XCTFail("Should not call then: \(value)")
+                XCTFail("Should not call then: \(String(describing: value))")
                 return .value(nil)
             }, reject: { error in
                 expectation.fulfill()
@@ -195,7 +195,7 @@ class PromiseTests: XCTestCase {
         let promise2 = promise1.then(
             { value in
                 expectation1.fulfill()
-                XCTFail("Should not call then promise1: \(value)")
+                XCTFail("Should not call then promise1: \(String(describing: value))")
                 return .value(value)
             }, reject: { error in
                 XCTAssertEqual(expectedError, error as NSError)
@@ -205,7 +205,7 @@ class PromiseTests: XCTestCase {
         let promise3 = promise2.then(
             { value in
                 expectation2.fulfill()
-                XCTFail("Should not call then promise2: \(value)")
+                XCTFail("Should not call then promise2: \(String(describing: value))")
                 return .value(value)
             }, reject: { error in
                 XCTAssertEqual(expectedError, error as NSError)
@@ -215,7 +215,7 @@ class PromiseTests: XCTestCase {
         promise3.then(
             { value in
                 expectation3.fulfill()
-                XCTFail("Should not call then promise3: \(value)")
+                XCTFail("Should not call then promise3: \(String(describing: value))")
                 return .value(value)
             }, reject: { error in
                 XCTAssertEqual(expectedError, error as NSError)
@@ -245,7 +245,7 @@ class PromiseTests: XCTestCase {
                 promise3.then(
                     { value3 in
                         expectation3.fulfill()
-                        XCTFail("Should not call then promise3: \(value3)")
+                        XCTFail("Should not call then promise3: \(String(describing: value3))")
                         return .value(value3)
                     }, reject: { error3 in
                         expectation3.fulfill()
@@ -260,7 +260,7 @@ class PromiseTests: XCTestCase {
         promise2.then(
             { value2 in
                 expectation2.fulfill()
-                XCTFail("Should not call then promise2: \(value2)")
+                XCTFail("Should not call then promise2: \(String(describing: value2))")
                 return .value(value2)
             }, reject: { error2 in
                 XCTAssertEqual(expectedError, error2 as NSError)
@@ -290,7 +290,7 @@ class PromiseTests: XCTestCase {
         promise2.then(
             { value2 in
                 expectation2.fulfill()
-                XCTFail("Should not call then promise2: \(value2)")
+                XCTFail("Should not call then promise2: \(String(describing: value2))")
                 return .value(value2)
             }, reject: { error2 in
                 XCTAssertEqual(expectedError, error2 as NSError)
@@ -366,7 +366,7 @@ class PromiseTests: XCTestCase {
     func testTypeSafeValueAsPromiseWithError() {
         let error = NSError(domain: "test", code: -1, userInfo: nil)
         let promise:Promise<String> = Promise.valueAsPromise(error)
-        XCTAssertEqual(error, promise.error as? NSError)
+        XCTAssertEqual(error, promise.error as NSError?)
         XCTAssertFalse(promise.isPending)
         XCTAssertFalse(promise.isFulfilled)
         XCTAssertTrue(promise.isRejected)
@@ -396,7 +396,7 @@ class PromiseTests: XCTestCase {
     func testAnyObjectValueAsPromiseWithError() {
         let error = NSError(domain: "test", code: -1, userInfo: nil)
         let promise:Promise<String> = Promise.valueAsPromise(error)
-        XCTAssertEqual(error, promise.error as? NSError)
+        XCTAssertEqual(error, promise.error as NSError?)
         XCTAssertFalse(promise.isPending)
         XCTAssertFalse(promise.isFulfilled)
         XCTAssertTrue(promise.isRejected)

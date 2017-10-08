@@ -8,22 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		20CC32451ACDF80F00231894 /* SwiftPromises.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20CC323A1ACDF80F00231894 /* SwiftPromises.framework */; };
-		20CC325F1ACDFDCA00231894 /* SwiftPromises.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20CC323A1ACDF80F00231894 /* SwiftPromises.framework */; };
-		20CC32641ACE068D00231894 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F89674E21A9E58B700FA3AED /* Main.storyboard */; };
-		20CC32651ACE068D00231894 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F89674E71A9E58B700FA3AED /* LaunchScreen.xib */; };
 		20CC32691ACE0B5C00231894 /* PromiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89675021A9E593900FA3AED /* PromiseTests.swift */; };
 		20CC326A1ACE0B6000231894 /* SynchronizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B615B1A9F6C3D0070549A /* SynchronizerTests.swift */; };
-		F80CE8F21AA3AAB40074F2B6 /* SimpleNetworkCallDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80CE8F11AA3AAB40074F2B6 /* SimpleNetworkCallDemoViewController.swift */; };
-		F80CE8F41AA3B3550074F2B6 /* BaseDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80CE8F31AA3B3550074F2B6 /* BaseDemoViewController.swift */; };
 		F83C37971BDD78AD0019D65A /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83C37951BDD78AD0019D65A /* Promise.swift */; };
 		F83C37981BDD78AD0019D65A /* Synchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83C37961BDD78AD0019D65A /* Synchronizer.swift */; };
 		F83C379A1BDD78C70019D65A /* SwiftPromises.h in Headers */ = {isa = PBXBuildFile; fileRef = F83C37991BDD78C70019D65A /* SwiftPromises.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F85110701AA3DD170084234A /* ChainedNetworkCallDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F851106F1AA3DD170084234A /* ChainedNetworkCallDemoViewController.swift */; };
-		F85110721AA3E7C60084234A /* TimeoutNetworkCallDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85110711AA3E7C60084234A /* TimeoutNetworkCallDemoViewController.swift */; };
-		F85110741AA49ACF0084234A /* CompoundNetworkCallDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85110731AA49ACF0084234A /* CompoundNetworkCallDemoViewController.swift */; };
-		F89674DF1A9E58B700FA3AED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89674DE1A9E58B700FA3AED /* AppDelegate.swift */; };
-		F89674E11A9E58B700FA3AED /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89674E01A9E58B700FA3AED /* ViewController.swift */; };
-		F89674E61A9E58B700FA3AED /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F89674E51A9E58B700FA3AED /* Images.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,24 +30,12 @@
 		20CC323D1ACDF80F00231894 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		20CC32441ACDF80F00231894 /* SwiftPromisesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftPromisesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		20CC324C1ACDF80F00231894 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F80CE8F11AA3AAB40074F2B6 /* SimpleNetworkCallDemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleNetworkCallDemoViewController.swift; sourceTree = "<group>"; };
-		F80CE8F31AA3B3550074F2B6 /* BaseDemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseDemoViewController.swift; sourceTree = "<group>"; };
 		F83B615B1A9F6C3D0070549A /* SynchronizerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SynchronizerTests.swift; path = ../SwiftPromisesTests/SynchronizerTests.swift; sourceTree = "<group>"; };
 		F83C37951BDD78AD0019D65A /* Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
 		F83C37961BDD78AD0019D65A /* Synchronizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Synchronizer.swift; sourceTree = "<group>"; };
 		F83C37991BDD78C70019D65A /* SwiftPromises.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftPromises.h; sourceTree = "<group>"; };
-		F851106F1AA3DD170084234A /* ChainedNetworkCallDemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainedNetworkCallDemoViewController.swift; sourceTree = "<group>"; };
-		F85110711AA3E7C60084234A /* TimeoutNetworkCallDemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeoutNetworkCallDemoViewController.swift; sourceTree = "<group>"; };
-		F85110731AA49ACF0084234A /* CompoundNetworkCallDemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompoundNetworkCallDemoViewController.swift; sourceTree = "<group>"; };
 		F88E9EE61BFD367B0059A970 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F88E9EE71BFD3A300059A970 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		F89674D91A9E58B700FA3AED /* SwiftPromisesDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftPromisesDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		F89674DD1A9E58B700FA3AED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F89674DE1A9E58B700FA3AED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		F89674E01A9E58B700FA3AED /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		F89674E31A9E58B700FA3AED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		F89674E51A9E58B700FA3AED /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		F89674E81A9E58B700FA3AED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		F89675021A9E593900FA3AED /* PromiseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PromiseTests.swift; path = ../SwiftPromisesTests/PromiseTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -75,14 +52,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				20CC32451ACDF80F00231894 /* SwiftPromises.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F89674D61A9E58B700FA3AED /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				20CC325F1ACDFDCA00231894 /* SwiftPromises.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,7 +110,6 @@
 				F88E9EE61BFD367B0059A970 /* README.md */,
 				20CC323B1ACDF80F00231894 /* SwiftPromises */,
 				20CC324A1ACDF80F00231894 /* SwiftPromisesTests */,
-				F89674DB1A9E58B700FA3AED /* SwiftPromisesDemo */,
 				F89674DA1A9E58B700FA3AED /* Products */,
 			);
 			sourceTree = "<group>";
@@ -149,37 +117,10 @@
 		F89674DA1A9E58B700FA3AED /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F89674D91A9E58B700FA3AED /* SwiftPromisesDemo.app */,
 				20CC323A1ACDF80F00231894 /* SwiftPromises.framework */,
 				20CC32441ACDF80F00231894 /* SwiftPromisesTests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		F89674DB1A9E58B700FA3AED /* SwiftPromisesDemo */ = {
-			isa = PBXGroup;
-			children = (
-				F89674DE1A9E58B700FA3AED /* AppDelegate.swift */,
-				F89674E01A9E58B700FA3AED /* ViewController.swift */,
-				F80CE8F11AA3AAB40074F2B6 /* SimpleNetworkCallDemoViewController.swift */,
-				F85110711AA3E7C60084234A /* TimeoutNetworkCallDemoViewController.swift */,
-				F851106F1AA3DD170084234A /* ChainedNetworkCallDemoViewController.swift */,
-				F85110731AA49ACF0084234A /* CompoundNetworkCallDemoViewController.swift */,
-				F80CE8F31AA3B3550074F2B6 /* BaseDemoViewController.swift */,
-				F89674E21A9E58B700FA3AED /* Main.storyboard */,
-				F89674E51A9E58B700FA3AED /* Images.xcassets */,
-				F89674E71A9E58B700FA3AED /* LaunchScreen.xib */,
-				F89674DC1A9E58B700FA3AED /* Supporting Files */,
-			);
-			path = SwiftPromisesDemo;
-			sourceTree = "<group>";
-		};
-		F89674DC1A9E58B700FA3AED /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				F89674DD1A9E58B700FA3AED /* Info.plist */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -232,23 +173,6 @@
 			productReference = 20CC32441ACDF80F00231894 /* SwiftPromisesTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		F89674D81A9E58B700FA3AED /* SwiftPromisesDemo */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = F89674F81A9E58B700FA3AED /* Build configuration list for PBXNativeTarget "SwiftPromisesDemo" */;
-			buildPhases = (
-				F89674D51A9E58B700FA3AED /* Sources */,
-				F89674D61A9E58B700FA3AED /* Frameworks */,
-				F89674D71A9E58B700FA3AED /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = SwiftPromisesDemo;
-			productName = SwiftPromises;
-			productReference = F89674D91A9E58B700FA3AED /* SwiftPromisesDemo.app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -256,20 +180,17 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Ivy Gulch LLC";
 				TargetAttributes = {
 					20CC32391ACDF80F00231894 = {
 						CreatedOnToolsVersion = 6.3;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 0900;
 					};
 					20CC32431ACDF80F00231894 = {
 						CreatedOnToolsVersion = 6.3;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 0900;
 						TestTargetID = F89674D81A9E58B700FA3AED;
-					};
-					F89674D81A9E58B700FA3AED = {
-						CreatedOnToolsVersion = 6.1.1;
 					};
 				};
 			};
@@ -287,7 +208,6 @@
 			projectRoot = "";
 			targets = (
 				20CC32391ACDF80F00231894 /* SwiftPromises */,
-				F89674D81A9E58B700FA3AED /* SwiftPromisesDemo */,
 				20CC32431ACDF80F00231894 /* SwiftPromisesTests */,
 			);
 		};
@@ -305,16 +225,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F89674D71A9E58B700FA3AED /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				20CC32641ACE068D00231894 /* Main.storyboard in Resources */,
-				20CC32651ACE068D00231894 /* LaunchScreen.xib in Resources */,
-				F89674E61A9E58B700FA3AED /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,20 +249,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F89674D51A9E58B700FA3AED /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				F89674E11A9E58B700FA3AED /* ViewController.swift in Sources */,
-				F89674DF1A9E58B700FA3AED /* AppDelegate.swift in Sources */,
-				F80CE8F41AA3B3550074F2B6 /* BaseDemoViewController.swift in Sources */,
-				F80CE8F21AA3AAB40074F2B6 /* SimpleNetworkCallDemoViewController.swift in Sources */,
-				F85110741AA49ACF0084234A /* CompoundNetworkCallDemoViewController.swift in Sources */,
-				F85110701AA3DD170084234A /* ChainedNetworkCallDemoViewController.swift in Sources */,
-				F85110721AA3E7C60084234A /* TimeoutNetworkCallDemoViewController.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -362,25 +258,6 @@
 			targetProxy = 20CC32461ACDF80F00231894 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		F89674E21A9E58B700FA3AED /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F89674E31A9E58B700FA3AED /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		F89674E71A9E58B700FA3AED /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F89674E81A9E58B700FA3AED /* Base */,
-			);
-			name = LaunchScreen.xib;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		20CC32531ACDF80F00231894 /* Debug */ = {
@@ -405,7 +282,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ivygulch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -430,7 +307,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ivygulch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -450,7 +327,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ivygulch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -465,7 +342,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ivygulch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -477,14 +354,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -524,14 +407,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -553,28 +442,6 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		F89674F91A9E58B700FA3AED /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = SwiftPromisesDemo/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ivygulch.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		F89674FA1A9E58B700FA3AED /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = SwiftPromisesDemo/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ivygulch.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -604,15 +471,6 @@
 			buildConfigurations = (
 				F89674F61A9E58B700FA3AED /* Debug */,
 				F89674F71A9E58B700FA3AED /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		F89674F81A9E58B700FA3AED /* Build configuration list for PBXNativeTarget "SwiftPromisesDemo" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				F89674F91A9E58B700FA3AED /* Debug */,
-				F89674FA1A9E58B700FA3AED /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
